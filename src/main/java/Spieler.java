@@ -45,18 +45,18 @@ public class Spieler {
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
-    public static String getBenutzerDaten(int id){
-        String uid= String.valueOf(id);
-        return "SELECT * FROM spieler WHERE id = " +String.valueOf(uid);
+    public static String getBenutzerDaten(String username, String password){
+
+        return "SELECT * FROM spieler WHERE username = ' "+username+"' AND password = '"+password+"'";
     }
 
 
 
 
-    public void setFullRecordBenutzer(int id){
+    public void setFullRecordBenutzer(String username, String password){
 
         try {
-            ResultSet rs= st.executeQuery(getBenutzerDaten(id));
+            ResultSet rs= st.executeQuery(getBenutzerDaten(username, password));
             while(rs.next()){
 
                 this.id=rs.getInt("id");
