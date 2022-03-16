@@ -56,7 +56,7 @@ public class Spieler {
             ResultSet rs= st.executeQuery(getBenutzerDaten(id));
             while(rs.next()){
 
-                id=rs.getInt("id");
+                this.id=rs.getInt("id");
                 username = rs.getString("username");
                 password = rs.getString("password");
 
@@ -67,6 +67,14 @@ public class Spieler {
 
 
     }
+    static void SaveUser(String username, String password){
 
+     Statement st= Start.getDbv().getStatement();
+        try {
+            st.execute("INSERT INTO Spieler(username,password,admin) VALUES ('"+username+"','"+password+"',false");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
