@@ -67,14 +67,18 @@ public class Spieler {
 
 
     }
-    static void SaveUser(String username, String password){
+    static void SaveUser(String username, String password) throws SQLException {
 
      Statement st= Start.getDbv().getStatement();
-        try {
-            st.execute("INSERT INTO Spieler(username,password,admin) VALUES ('"+username+"','"+password+"',false");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
-}
+            st.execute("INSERT INTO Spieler(username,password,admin) VALUES ('"+username+"','"+password+"',false)");
+
+    }
+    static void DeleteUser(String username, String password) throws SQLException {
+
+        Statement st= Start.getDbv().getStatement();
+
+            st.execute("DELETE FROM Spieler WHERE username ='"+username+"' AND password = '"+password+"'");
+
+
+}}
