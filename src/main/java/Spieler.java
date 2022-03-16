@@ -81,4 +81,12 @@ public class Spieler {
             st.execute("DELETE FROM Spieler WHERE username ='"+username+"' AND password = '"+password+"'");
 
 
-}}
+}
+    static void SaveAdminUser(String username, String password) throws SQLException {
+
+        Statement st= Start.getDbv().getStatement();
+
+        st.execute("INSERT INTO Spieler(username,password,admin) VALUES ('"+username+"','"+password+"',true)");
+
+    }
+}
