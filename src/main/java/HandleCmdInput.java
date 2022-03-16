@@ -3,8 +3,10 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 public class HandleCmdInput {
-    private String cmds ="1-> Neune Spieer Account erstellen\n" +
-            "2-> Account löschen ";
+    private String cmds ="1-> Neuen Spieer Account erstellen\n" +
+            "2-> Account löschen\n" +
+            "3-> Neen Admin Account löschen" +
+            " ";
 
     private Statement statement = Start.getDbv().getStatement();
     public void input() {
@@ -36,9 +38,49 @@ public class HandleCmdInput {
                 }
             }
             case "1" -> {
-                System.out.println("<vorname> <nachname> <pasword>");
                 Scanner scanner = new Scanner(System.in);
-                String user = scanner.next();
+                System.out.println("<username>");
+                String vorname = scanner.next();
+                System.out.println("<password>");
+                String pwd = scanner.next();
+                try {
+                    Spieler.SaveUser(vorname,pwd);
+                    if(Start.isDebugMode())  System.out.println("[DEBUG] Spieler erfolgreich erstellt");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    if(Start.isDebugMode())  System.out.println("[DEBUG] Spieler  erstellen fehlgeschlagen");
+
+                }
+            }
+            case "2" -> {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("<username>");
+                String vorname = scanner.next();
+                System.out.println("<password>");
+                String pwd = scanner.next();
+                try {
+                    Spieler.DeleteUser(vorname,pwd);
+                    if(Start.isDebugMode())  System.out.println("[DEBUG] Spieler erfolgreich gelöscht");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    if(Start.isDebugMode())  System.out.println("[DEBUG] Spieler  löschen fehlgeschlagen");
+
+                }
+            }
+            case"3" -> {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("<username>");
+                String vorname = scanner.next();
+                System.out.println("<password>");
+                String pwd = scanner.next();
+                try {
+                    Spieler.SaveAdminUser(vorname,pwd);
+                    if(Start.isDebugMode())  System.out.println("[DEBUG] Spieler erfolgreich gelöscht");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    if(Start.isDebugMode())  System.out.println("[DEBUG] Spieler  löschen fehlgeschlagen");
+
+                }
             }
         }
         input();

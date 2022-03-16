@@ -50,6 +50,9 @@ public class Spieler {
         return "SELECT * FROM spieler WHERE id = " +String.valueOf(uid);
     }
 
+
+
+
     public void setFullRecordBenutzer(int id){
 
         try {
