@@ -3,10 +3,11 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class MainPanel extends JPanel {
+    JMenuBar menubar;
 
     MainPanel(){
 
-        JMenuBar menubar= new JMenuBar();
+        menubar= new JMenuBar();
         JMenu menu= new JMenu("session");
         JMenuItem item= new JMenuItem("Add Player to session");
         item.addActionListener(l -> {
@@ -50,6 +51,26 @@ public class MainPanel extends JPanel {
         menu.add(item);
         menubar.add(menu);
         add(menubar);
+        loggout();
+        currentUser();
+    }
+    public void loggout() {
+        JMenu logout = new JMenu("System");
+        JMenuItem log = new JMenuItem("Logout");
+        log.setLocation(20,2);
+        log.setBorder(new LineBorder(Color.BLACK,2));
+        logout.add(log);
+        menubar.add(logout);
+    }
+
+    public void currentUser() {
+        for(Spieler s: Start.getSession().getLoggedInspieler()){
+            JTextArea t = new JTextArea();
+            t.setText(s.getUsername());
+            t.setBorder(new LineBorder(Color.black,2));
+            t.setLocation(20,Start.getSession().getLoggedInspieler().indexOf(s)*40);
+            add(t);
+        }
     }
 
 }
