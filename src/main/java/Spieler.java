@@ -47,7 +47,7 @@ public class Spieler {
     }
     public static String getBenutzerDaten(String username, String password){
 
-        return "SELECT * FROM spieler WHERE username = ' "+username+"' AND password = '"+password+"'";
+        return "SELECT * FROM spieler WHERE username = '"+username+"' AND password = '"+password+"'";
     }
 
 
@@ -67,6 +67,7 @@ public class Spieler {
             }
 
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
         return this;
 
@@ -92,5 +93,16 @@ public class Spieler {
 
         st.execute("INSERT INTO Spieler(username,password,admin) VALUES ('"+username+"','"+password+"',true)");
 
+    }
+
+
+    public void toStringd() {
+        System.out.println( "Spieler{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", admin=" + admin +
+                ", st=" + st +
+                '}');
     }
 }
