@@ -55,11 +55,19 @@ public class MainPanel extends JPanel {
 
         });
 
+        JMenuItem item2 = new JMenuItem("Remove Player");
+        item.addActionListener(l -> {
 
+            for (int i = 0; i < ; i++) {
+                
+            }
+            
+                });
 
 
 
         menu.add(item);
+        menu.add(item2);
         menubar.add(menu);
         add(menubar);
         loggout();
