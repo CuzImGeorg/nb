@@ -1,12 +1,13 @@
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MainPanel extends JPanel {
     JMenuBar menubar;
+    private ArrayList<Spieler>  spieler= new ArrayList<>();
 
     MainPanel(){
-
         menubar= new JMenuBar();
         JMenu menu= new JMenu("session");
         JMenuItem item= new JMenuItem("Add Player to session");
@@ -48,10 +49,13 @@ public class MainPanel extends JPanel {
                 remove(password);
                 remove(btn);
                 updateUI();
+                StartBtnUeberpruefung();
             });
 
 
         });
+
+
 
 
 
@@ -60,6 +64,36 @@ public class MainPanel extends JPanel {
         add(menubar);
         loggout();
         currentUser();
+    }
+    public void StartBtnUeberpruefung(){
+        if(Start.getSession().getLoggedInspieler().isEmpty()){
+
+        }else{
+            spieler= Start.getSession().getLoggedInspieler();
+            if(spieler.size() >= 2){
+                JButton SpielStart = new JButton();
+                SpielStart.setBorder(new LineBorder(Color.BLACK,2));
+                SpielStart.setBackground(Color.GREEN);
+                SpielStart.setBounds(722, 750,100,30);
+                SpielStart.setVisible(true);
+                SpielStart.setText("Starte Spiel");
+                add(SpielStart);
+                setSize(100,25);
+                setLayout(null);
+                updateUI();
+                SpielStart.addActionListener(e -> {
+                    removeAll();
+                    revalidate();
+                    repaint();
+
+
+                    SpielFeld();
+                });
+            }
+        }
+    }
+    public void SpielFeld(){
+
     }
     public void loggout() {
         JMenu logout = new JMenu("System");

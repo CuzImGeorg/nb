@@ -4,10 +4,11 @@ public class Start {
     private static Session session;
     public static void main(String[] args) {
 //        if(args[0].equalsIgnoreCase("debug true")) debugMode = true;
+        session = new Session();
         MainFrame main= new MainFrame();
          dbv = new Datenbankverbindung();
         HandleCmdInput hci = new HandleCmdInput();
-        session = new Session();
+
         hci.input();
     }
 
