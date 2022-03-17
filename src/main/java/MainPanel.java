@@ -53,7 +53,6 @@ public class MainPanel extends JPanel {
                 remove(btn);
                 updateUI();
                 currentUser();
-
             });
 
 
@@ -77,6 +76,8 @@ public class MainPanel extends JPanel {
     }
 
     public void currentUser() {
+
+            Start.getSession().getLoggedInspieler().forEach(Spieler::toStringd);
             if(!Start.getSession().getLoggedInspieler().isEmpty()) {
                 for (Spieler s : Start.getSession().getLoggedInspieler()) {
 
