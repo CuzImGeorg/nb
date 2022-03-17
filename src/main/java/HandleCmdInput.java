@@ -5,11 +5,13 @@ import java.util.Scanner;
 public class HandleCmdInput {
     private String cmds ="1-> Neuen Spieer Account erstellen\n" +
             "2-> Account löschen\n" +
-            "3-> Neen Admin Account löschen" +
-            " ";
+            "3-> Neen Admin Account löschen\n" +
+            "4-> [Admin] neue Frage speichern\n"+
+            "5-> [Admin] Frage löschen";
 
     private Statement statement = Start.getDbv().getStatement();
     public void input() {
+        System.out.println(cmds);
         Scanner s = new Scanner(System.in);
         switch (s.next()) {
             case "DROP TABLES" -> {
@@ -67,7 +69,7 @@ public class HandleCmdInput {
 
                 }
             }
-            case"3" -> {
+            case "3" -> {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("<username>");
                 String vorname = scanner.next();
@@ -79,6 +81,35 @@ public class HandleCmdInput {
                 } catch (SQLException e) {
                     e.printStackTrace();
                     if(Start.isDebugMode())  System.out.println("[DEBUG] Spieler  löschen fehlgeschlagen");
+
+                }
+            }
+            case "4" -> {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("<frage>");
+                String frage = scanner.next();
+                System.out.println("<antwort>");
+                String antwort = scanner.next();
+                try {
+                    Spieler.DeleteUser(frage,antwort);
+                    if(Start.isDebugMode())  System.out.println("[DEBUG] Frage erfolgreich gespeichert");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    if(Start.isDebugMode())  System.out.println("[DEBUG] Frage  speichern fehlgeschlagen");
+
+                }
+            }
+            case "5" -> {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("<frage>");
+                String frage = scanner.next();
+
+                try {
+                    Spieler.DeleteUser(frage," ");
+                    if(Start.isDebugMode())  System.out.println("[DEBUG] Frage erfolgreich gelöscht");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    if(Start.isDebugMode())  System.out.println("[DEBUG] Frage  löschen fehlgeschlagen");
 
                 }
             }

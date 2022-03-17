@@ -10,8 +10,8 @@ public class Spieler {
     Statement st;
 
 
-    public Spieler(Statement st) {
-        this.st = st;
+    public Spieler() {
+       st = Start.getDbv().getStatement();
     }
 
     public int getId() {
@@ -53,21 +53,22 @@ public class Spieler {
 
 
 
-    public void setFullRecordBenutzer(String username, String password){
+    public Spieler setFullRecordBenutzer(String username, String password){
 
         try {
             ResultSet rs= st.executeQuery(getBenutzerDaten(username, password));
             while(rs.next()){
 
                 this.id=rs.getInt("id");
-                username = rs.getString("username");
-                password = rs.getString("password");
+                this.username = rs.getString("username");
+                this.password = rs.getString("password");
 
 
             }
+
         } catch (SQLException ex) {
         }
-
+        return this;
 
     }
     static void SaveUser(String username, String password) throws SQLException {
