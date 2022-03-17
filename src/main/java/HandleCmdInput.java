@@ -1,6 +1,9 @@
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class HandleCmdInput {
     private String cmds ="1-> Neuen Spieer Account erstellen\n" +
@@ -11,6 +14,10 @@ public class HandleCmdInput {
 
     private Statement statement = Start.getDbv().getStatement();
     public void input() {
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+        ses.scheduleAtFixedRate(()-> {
+
+
         System.out.println(cmds);
         Scanner s = new Scanner(System.in);
         switch (s.next()) {
@@ -114,7 +121,7 @@ public class HandleCmdInput {
                 }
             }
         }
-        input();
+        },1,1, TimeUnit.MILLISECONDS);
     }
 
     private String create() {

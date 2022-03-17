@@ -1,6 +1,10 @@
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MainPanel extends JPanel {
     JMenuBar menubar;
@@ -48,6 +52,7 @@ public class MainPanel extends JPanel {
                 remove(password);
                 remove(btn);
                 updateUI();
+                currentUser();
             });
 
 
@@ -71,13 +76,22 @@ public class MainPanel extends JPanel {
     }
 
     public void currentUser() {
-        for(Spieler s: Start.getSession().getLoggedInspieler()){
-            JTextArea t = new JTextArea();
-            t.setText(s.getUsername());
-            t.setBorder(new LineBorder(Color.black,2));
-            t.setLocation(20,Start.getSession().getLoggedInspieler().indexOf(s)*40);
-            add(t);
-        }
+
+            Start.getSession().getLoggedInspieler().forEach(Spieler::toStringd);
+            if(!Start.getSession().getLoggedInspieler().isEmpty()) {
+                for (Spieler s : Start.getSession().getLoggedInspieler()) {
+
+                    JTextArea t = new JTextArea();
+                    t.setText(s.getUsername());
+                    t.setBorder(new LineBorder(Color.black, 2));
+                    t.setBounds(20, Start.getSession().getLoggedInspieler().indexOf(s) * 40,100,20);
+                    t.setVisible(true);
+                    t.setEditable(false);
+                    add(t);
+                    updateUI();
+                }
+            }
+
     }
 
 }
