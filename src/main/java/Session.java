@@ -16,6 +16,10 @@ public class Session {
         loggedInspieler.removeIf((s) -> s.getUsername().equalsIgnoreCase(username));
     }
 
+    public ArrayList<Spieler> getLoggedInspieler() {
+        return loggedInspieler;
+    }
+
     public void setLoggedInspieler(ArrayList<Spieler> loggedInspieler) {
         this.loggedInspieler = loggedInspieler;
     }
