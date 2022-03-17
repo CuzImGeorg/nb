@@ -7,9 +7,8 @@ public class Start {
 //        if(args[0].equalsIgnoreCase("debug true")) debugMode = true;
         MainFrame main= new MainFrame();
          dbv = new Datenbankverbindung();
-   //      HandleCmdInput hci = new HandleCmdInput();
-
-       // hci.input();
+        HandleCmdInput hci = new HandleCmdInput();
+        hci.input();
     }
 
     public static Datenbankverbindung getDbv() {
