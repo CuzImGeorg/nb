@@ -41,7 +41,14 @@ public class MainPanel extends JPanel {
             setSize(100,25);
             setLayout(null);
             updateUI();
-            btn.addActionListener(e -> Start.getSession().addSpieler(username.getText(),password.getText()));
+            btn.addActionListener(e -> {
+                Start.getSession().addSpieler(username.getText(),password.getText());
+                remove(username);
+                remove(password);
+                remove(btn);
+                updateUI();
+            });
+
 
         });
 
