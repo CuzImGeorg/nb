@@ -2,10 +2,11 @@ public class Start {
     private static Datenbankverbindung dbv = null;
     private static boolean debugMode = true;
     private static Session session;
+    private static MainFrame main;
     public static void main(String[] args) {
 //        if(args[0].equalsIgnoreCase("debug true")) debugMode = true;
         session = new Session();
-        MainFrame main= new MainFrame();
+       main = new MainFrame();
          dbv = new Datenbankverbindung();
         HandleCmdInput hci = new HandleCmdInput();
 
@@ -22,5 +23,9 @@ public class Start {
 
     public static Session getSession() {
         return session;
+    }
+
+    public static MainFrame getMainFrame() {
+        return main;
     }
 }

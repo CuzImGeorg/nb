@@ -3,13 +3,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Frage {
-    String frage;
-    String Antwort;
-    int id;
-    Statement st;
+    private String frage;
+    private String Antwort;
+    private int id;
+    private Statement st;
 
-    Frage(Statement st){
-        this.st=st;
+    Frage(){
+        st = Start.getDbv().getStatement();
     }
 
     public String getAntwort() {
@@ -35,7 +35,7 @@ public class Frage {
 
 
 
-    public void setFullRecordBenutzer(int id){
+    public void setFullRecord(int id){
 
         try {
             ResultSet rs= st.executeQuery(getFrageDaten(id));

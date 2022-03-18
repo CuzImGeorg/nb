@@ -120,6 +120,9 @@ public class MainPanel extends JPanel {
         JMenuItem log = new JMenuItem("Logout");
         log.setLocation(20,2);
         log.setBorder(new LineBorder(Color.BLACK,2));
+        log.addActionListener((l) -> {
+            Start.getSession().getLoggedInspieler().remove(Start.getSession().getCurrentSpieler());
+        });
         logout.add(log);
         menubar.add(logout);
     }

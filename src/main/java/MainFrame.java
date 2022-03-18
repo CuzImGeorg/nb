@@ -1,14 +1,19 @@
 import javax.swing.*;
 
 public class MainFrame extends JFrame {
+    private MainPanel gui;
     MainFrame(){
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1920,1080);
         setLocationRelativeTo(null);
-        MainPanel gui= new MainPanel();
+        gui = new MainPanel();
         setContentPane(gui);
         setVisible(true);
 
+    }
+
+    public MainPanel getGui() {
+        return gui;
     }
 }

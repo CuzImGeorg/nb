@@ -3,11 +3,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Spieler {
-    int id;
-    String username;
-    String password;
-    boolean admin;
-    Statement st;
+    private int id;
+    private String username;
+    private String password;
+    private boolean admin;
+    private final Statement st;
 
 
     public Spieler() {
@@ -102,7 +102,10 @@ public class Spieler {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", admin=" + admin +
-                ", st=" + st +
                 '}');
+    }
+
+    public void equals(Spieler s){
+
     }
 }
