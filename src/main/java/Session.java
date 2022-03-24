@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Session {
@@ -7,11 +8,16 @@ public class Session {
 
 
     public void addSpieler(String username, String pwd) {
-         loggedInspieler.add(new Spieler().setFullRecordBenutzer( username, pwd));
+        try {
+            loggedInspieler.add(new Spieler().setFullRecordBenutzer( username, pwd));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     public void removeSpielerById(int ids) {
         loggedInspieler.removeIf((s) -> s.getId() == ids);
     }
+
     public void removeSpielerByName(String username) {
         loggedInspieler.removeIf((s) -> s.getUsername().equalsIgnoreCase(username));
     }

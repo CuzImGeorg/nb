@@ -33,8 +33,6 @@ public class Frage {
     }
 
 
-
-
     public void setFullRecord(int id){
 
         try {

@@ -8,8 +8,18 @@ public class MainPanel extends JPanel {
     private ArrayList<Spieler>  spieler= new ArrayList<>();
 
     MainPanel(){
-
         menubar= new JMenuBar();
+
+
+
+        add(menubar);
+        menuSession();
+
+        admin();
+        currentUser();
+    }
+    private ArrayList<JButton> barr = new ArrayList<>();
+    public void menuSession() {
         JMenu menu= new JMenu("session");
         JMenuItem item= new JMenuItem("Add Player to session");
         item.addActionListener(l -> {
@@ -49,6 +59,7 @@ public class MainPanel extends JPanel {
                 remove(username);
                 remove(password);
                 remove(btn);
+                currentUser();
                 updateUI();
                 StartBtnUeberpruefung();
             });
@@ -56,34 +67,49 @@ public class MainPanel extends JPanel {
 
         });
         JMenuItem item2 = new JMenuItem("Remove Player");
-        item.addActionListener(l -> {
+        item2.addActionListener(l -> {
 
-           for (int i = 0; i < spieler.size(); i++) {
-
-               JButton BtnRemove= new JButton();
-               BtnRemove.setBorder(new LineBorder(Color.BLACK,2));
-               BtnRemove.setBackground(Color.GREEN);
-               BtnRemove.setBounds(800, 80 + (i*20),100,30);
-               BtnRemove.setVisible(true);
-               BtnRemove.setText("Remove");
-               add(BtnRemove);
-               setSize(100,25);
-               setLayout(null);
-
+            for(JButton b: barr) {
+                remove(b);
             }
+            barr.clear();
 
+            for (int i = 0; i < spieler.size(); i++) {
+                JButton BtnRemove= new JButton();
+                BtnRemove.setBorder(new LineBorder(Color.BLACK,2));
+                BtnRemove.setBackground(Color.GREEN);
+                BtnRemove.setBounds(120, i*40,80,20);
+                BtnRemove.setVisible(true);
+                BtnRemove.setText("Remove");
+                BtnRemove.addActionListener((a)-> {
+                    for(JTextArea  ta: tarr) {
+                        remove(ta);
+                    }
+                    System.out.println(BtnRemove.getY()/40);
+                    Start.getSession().getLoggedInspieler().remove(BtnRemove.getY()/40);
+                    tarr.remove(BtnRemove.getY()/40);
+                    currentUser();
+                    updateUI();
+                    remove(BtnRemove);
+                    for(JButton b: barr) {
+                        remove(b);
+                    }
+                    barr.clear();
+                });
+                barr.add(BtnRemove);
+                add(BtnRemove);
+                setLayout(null);
+            }
+            updateUI();
         });
-
-
-
-
 
         menu.add(item);
         menu.add(item2);
         menubar.add(menu);
-        add(menubar);
-        loggout();
-        currentUser();
+
+
+
+
     }
     public void StartBtnUeberpruefung(){
         if(Start.getSession().getLoggedInspieler().isEmpty()){
@@ -115,19 +141,23 @@ public class MainPanel extends JPanel {
     public void SpielFeld(){
 
     }
-    public void loggout() {
-        JMenu logout = new JMenu("System");
-        JMenuItem log = new JMenuItem("Logout");
-        log.setLocation(20,2);
-        log.setBorder(new LineBorder(Color.BLACK,2));
-        log.addActionListener((l) -> {
-            Start.getSession().getLoggedInspieler().remove(Start.getSession().getCurrentSpieler());
+
+    public void admin(){
+        JMenu fragen = new JMenu("admin");
+        JMenuItem admPanel = new JMenuItem("Frage hinzufügen");
+        admPanel.setLocation(20,2);
+        admPanel.setBorder(new LineBorder(Color.BLACK,2));
+        admPanel.addActionListener((l)-> {
+
+
         });
-        logout.add(log);
-        menubar.add(logout);
+        fragen.add(admPanel);
+        menubar.add(fragen);
     }
 
+    private ArrayList<JTextArea> tarr = new ArrayList<>();
     public void currentUser() {
+
         Start.getSession().getLoggedInspieler().forEach(Spieler::toStringd);
         if(!Start.getSession().getLoggedInspieler().isEmpty()) {
             for (Spieler s : Start.getSession().getLoggedInspieler()) {
@@ -138,6 +168,7 @@ public class MainPanel extends JPanel {
                 t.setBounds(20, Start.getSession().getLoggedInspieler().indexOf(s) * 40,100,20);
                 t.setVisible(true);
                 t.setEditable(false);
+                tarr.add(t);
                 add(t);
                 updateUI();
             }
