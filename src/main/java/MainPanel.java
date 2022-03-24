@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MainPanel extends JPanel {
@@ -9,14 +10,13 @@ public class MainPanel extends JPanel {
 
     MainPanel(){
         menubar= new JMenuBar();
-
-
-
+        setBackground(Color.darkGray);
         add(menubar);
         menuSession();
 
         admin();
         currentUser();
+        menuGobal();
     }
     private ArrayList<JButton> barr = new ArrayList<>();
     public void menuSession() {
@@ -142,12 +142,115 @@ public class MainPanel extends JPanel {
 
     }
 
+    public void menuGobal() {
+        JMenu global = new JMenu("Global");
+        JMenuItem addplayer = new JMenuItem("Spieler registrieren");
+        addplayer.setLocation(20,2);
+        addplayer.setBorder(new LineBorder(Color.BLACK,2));
+
+        addplayer.addActionListener(l -> {
+                JTextArea username= new JTextArea();
+                username.setBorder(new LineBorder(Color.BLACK,2));
+                username.setBackground(Color.white);
+                username.setBounds(722, 80,100,30);
+                username.setText("Username");
+                add(username);
+                setSize(100,25);
+                setLayout(null);
+                username.setEditable(true);
+                JTextArea password= new JTextArea();
+                password.setBorder(new LineBorder(Color.BLACK,2));
+                password.setBackground(Color.white);
+                password.setBounds(722, 120,100,30);
+                password.setText("Password");
+                add(password);
+                setSize(100,25);
+                setLayout(null);
+                password.setEditable(true);
+                updateUI();
+
+                JButton btn= new JButton();
+
+                btn.setBorder(new LineBorder(Color.BLACK,2));
+                btn.setBackground(Color.GREEN);
+                btn.setBounds(722, 160,100,30);
+                btn.setVisible(true);
+                btn.setText("Registrieren");
+                add(btn);
+                setSize(100,25);
+                setLayout(null);
+                updateUI();
+                btn.addActionListener(e -> {
+                    try {
+                        Spieler.SaveUser(username.getText(), password.getText());
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    remove(username);
+                    remove(password);
+                    remove(btn);
+                    //TODO fix remove buttons
+                });
+            });
+
+        global.add(addplayer);
+        menubar.add(global);
+    }
+
     public void admin(){
         JMenu fragen = new JMenu("admin");
-        JMenuItem admPanel = new JMenuItem("Frage hinzufügen");
+        JMenuItem admPanel = new JMenuItem("Admin Panel");
         admPanel.setLocation(20,2);
         admPanel.setBorder(new LineBorder(Color.BLACK,2));
         admPanel.addActionListener((l)-> {
+            JFrame frame = new JFrame("Admin Panel");
+            JPanel panel = new JPanel();
+            frame.setContentPane(panel);
+            frame.setSize(400,600);
+            frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            frame.setVisible(true);
+            panel.setBackground(Color.darkGray);
+            panel.setLayout(null);
+
+            JTextArea username= new JTextArea();
+            username.setBorder(new LineBorder(Color.BLACK,2));
+            username.setBackground(Color.white);
+            username.setBounds(100, 80,100,30);
+            username.setText("Username");
+            panel.add(username);
+
+            username.setEditable(true);
+            JTextArea password= new JTextArea();
+            password.setBorder(new LineBorder(Color.BLACK,2));
+            password.setBackground(Color.white);
+            password.setBounds(100, 120,100,30);
+            password.setText("Password");
+            panel.add(password);
+
+
+            password.setEditable(true);
+            panel.updateUI();
+
+            JButton btn= new JButton();
+
+            btn.setBorder(new LineBorder(Color.BLACK,2));
+            btn.setBackground(Color.GREEN);
+            btn.setBounds(100, 160,100,30);
+            btn.setVisible(true);
+            btn.setText("Registrieren");
+            panel.add(btn);
+            panel.updateUI();
+            btn.addActionListener(e -> {
+                if(new Spieler().setFullRecordBenutzer(username.getText(), password.getText()).isAdmin()){
+                    System.out.println("ok");
+                }else {
+                    frame.dispose();
+                }
+                panel.remove(username);
+                panel.remove(password);
+                panel.remove(btn);
+                //TODO fix remove buttons
+            });
 
 
         });

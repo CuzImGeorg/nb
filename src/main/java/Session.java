@@ -8,11 +8,8 @@ public class Session {
 
 
     public void addSpieler(String username, String pwd) {
-        try {
             loggedInspieler.add(new Spieler().setFullRecordBenutzer( username, pwd));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
     public void removeSpielerById(int ids) {
         loggedInspieler.removeIf((s) -> s.getId() == ids);

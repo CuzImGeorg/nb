@@ -53,7 +53,7 @@ public class Spieler {
 
 
 
-    public Spieler setFullRecordBenutzer(String username, String password) throws SQLException{
+    public Spieler setFullRecordBenutzer(String username, String password) {
 
         try {
             ResultSet rs= st.executeQuery(getBenutzerDaten(username, password));
@@ -62,10 +62,8 @@ public class Spieler {
                 this.id=rs.getInt("id");
                 this.username = rs.getString("username");
                 this.password = rs.getString("password");
+                this.admin = Boolean.parseBoolean(rs.getString("admin")); // TODO fix
 
-                if(username == null|| password == null) {
-                    throw new SQLException("t"); //TODO fix this
-                }
 
             }
 
