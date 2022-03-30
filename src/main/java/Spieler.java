@@ -11,7 +11,7 @@ public class Spieler {
 
 
     public Spieler() {
-       st = Start.getDbv().getStatement();
+        st = Start.getDbv().getStatement();
     }
 
     public int getId() {
@@ -45,24 +45,23 @@ public class Spieler {
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
-    public static String getBenutzerDaten(String username, String password){
 
-        return "SELECT * FROM spieler WHERE username = '"+username+"' AND password = '"+password+"'";
+    public static String getBenutzerDaten(String username, String password) {
+
+        return "SELECT * FROM spieler WHERE username = '" + username + "' AND password = '" + password + "'";
     }
-
-
 
 
     public Spieler setFullRecordBenutzer(String username, String password) {
 
         try {
-            ResultSet rs= st.executeQuery(getBenutzerDaten(username, password));
-            while(rs.next()){
+            ResultSet rs = st.executeQuery(getBenutzerDaten(username, password));
+            while (rs.next()) {
 
-                this.id=rs.getInt("id");
+                this.id = rs.getInt("id");
                 this.username = rs.getString("username");
                 this.password = rs.getString("password");
-                this.admin = Boolean.parseBoolean(rs.getString("admin")); // TODO fix
+                this.admin = rs.getBoolean("admin"); // TODO fix
 
 
             }
@@ -73,32 +72,35 @@ public class Spieler {
         return this;
 
     }
+
     static void SaveUser(String username, String password) throws SQLException {
 
-     Statement st= Start.getDbv().getStatement();
+        Statement st = Start.getDbv().getStatement();
 
-            st.execute("INSERT INTO Spieler(username,password,admin) VALUES ('"+username+"','"+password+"',false)");
+        st.execute("INSERT INTO Spieler(username,password,admin) VALUES ('" + username + "','" + password + "',false)");
 
     }
+
     static void DeleteUser(String username, String password) throws SQLException {
 
-        Statement st= Start.getDbv().getStatement();
+        Statement st = Start.getDbv().getStatement();
 
-            st.execute("DELETE FROM Spieler WHERE username ='"+username+"' AND password = '"+password+"'");
+        st.execute("DELETE FROM Spieler WHERE username ='" + username + "' AND password = '" + password + "'");
 
 
-}
+    }
+
     static void SaveAdminUser(String username, String password) throws SQLException {
 
-        Statement st= Start.getDbv().getStatement();
+        Statement st = Start.getDbv().getStatement();
 
-        st.execute("INSERT INTO Spieler(username,password,admin) VALUES ('"+username+"','"+password+"',true)");
+        st.execute("INSERT INTO Spieler(username,password,admin) VALUES ('" + username + "','" + password + "',true)");
 
     }
 
 
     public void toStringd() {
-        System.out.println( "Spieler{" +
+        System.out.println("Spieler{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
@@ -106,7 +108,9 @@ public class Spieler {
                 '}');
     }
 
-    public void equals(Spieler s){
+    public void equals(Spieler s) {
 
     }
+
+
 }
