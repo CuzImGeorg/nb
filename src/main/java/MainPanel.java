@@ -251,7 +251,7 @@ public class MainPanel extends JPanel {
                 panel.remove(btn);
                 //TODO fix remove buttons
             });
-
+//
 
         });
         fragen.add(admPanel);
