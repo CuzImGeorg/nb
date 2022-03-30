@@ -61,7 +61,7 @@ public class Spieler {
                 this.id = rs.getInt("id");
                 this.username = rs.getString("username");
                 this.password = rs.getString("password");
-                this.admin = rs.getBoolean("admin"); // TODO fix
+                this.admin = rs.getBoolean("admin");
 
 
             }

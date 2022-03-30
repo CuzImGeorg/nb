@@ -248,10 +248,14 @@ public class MainPanel extends JPanel {
                 }else {
                     frame.dispose();
                 }
-                panel.remove(username);
-                panel.remove(password);
-                panel.remove(btn);
-                //TODO fix remove buttons
+
+                password.setVisible(false);
+                password.setEnabled(false);
+                username.setVisible(false);
+                username.setEnabled(false);
+                btn.setVisible(false);
+                btn.setEnabled(false);
+
             });
 //
 
