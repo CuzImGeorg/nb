@@ -3,6 +3,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainPanel extends JPanel {
     JMenuBar menubar;
@@ -131,6 +132,7 @@ public class MainPanel extends JPanel {
                     removeAll();
                     revalidate();
                     repaint();
+                    gamestart();
 
 
                     SpielFeld();
@@ -277,6 +279,43 @@ public class MainPanel extends JPanel {
             }
         }
 
+    }
+
+
+    //after game start
+    private HashMap<Spieler, JTextArea> spielerJTextAreaHashMap = new HashMap<>();
+    private void gamestart() {
+        renderPlayers();
+    }
+
+    private void renderPlayers() {
+        //TODO wenn zeit mochen dass dynamisch spieerahnzal isch :D
+        if(!Start.getSession().getLoggedInspieler().isEmpty()) {
+            for (Spieler s : Start.getSession().getLoggedInspieler()) {
+
+                JTextArea t = new JTextArea();
+                t.setText(s.getUsername());
+                t.setFont(new Font("Verdana",1,20));
+                t.setBorder(new LineBorder(Color.black, 2));
+                switch (Start.getSession().getLoggedInspieler().indexOf(s)){
+                    case 0-> t.setBounds(550, 100,200,30);
+                    case 1 -> t.setBounds(1050, 100,200,30);
+                    case 2 -> t.setBounds(40, 300,200,30);
+                    case 3 -> t.setBounds(40, 700,200,30);
+                    case 4 -> t.setBounds(550, 900,200,30);
+                    case 5 -> t.setBounds(1050, 900,200,30);
+                    case 6 -> t.setBounds(1600, 300,200,30);
+                    case 7 -> t.setBounds(1600, 700,200,30);
+
+                }
+
+                t.setVisible(true);
+                t.setEditable(false);
+                spielerJTextAreaHashMap.put(s, t);
+                add(t);
+                updateUI();
+            }
+        }
     }
 
 }
