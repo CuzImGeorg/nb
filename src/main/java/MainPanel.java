@@ -4,6 +4,10 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MainPanel extends JPanel {
     JMenuBar menubar;
@@ -11,6 +15,7 @@ public class MainPanel extends JPanel {
 
     MainPanel(){
         menubar= new JMenuBar();
+        setSize(1920,1080);
         setBackground(Color.darkGray);
         add(menubar);
         menuSession();
@@ -288,8 +293,13 @@ public class MainPanel extends JPanel {
 
     //after game start
     private HashMap<Spieler, JTextArea> spielerJTextAreaHashMap = new HashMap<>();
+    private HashMap<Spieler, JTextArea> spielerJTextAreaHashMapanswer = new HashMap<>();
+    private HashMap<Spieler, JButton> spielerJButtonHashMap = new HashMap<>();
     private void gamestart() {
         renderPlayers();
+        randomquestion();
+        writeanswer();
+
     }
 
     private void renderPlayers() {
@@ -320,6 +330,71 @@ public class MainPanel extends JPanel {
                 updateUI();
             }
         }
+    }
+
+    public void randomquestion() {
+        JTextArea frage = new JTextArea();
+        Random rdm = new Random();
+
+        frage.setText("Dies ist eine Test Frage die sehr lange ist ohne grund nur um das Programm zu testen :D das ist eine smily der nix kann ");
+        frage.setLineWrap(true);
+        frage.setBackground(Color.darkGray);
+        frage.setForeground(Color.white);
+        frage.setFont(new Font("Verdana",1,25));
+        frage.setBounds(760,500,400,300);
+        frage.setEditable(false);
+
+        add(frage);
+    }
+
+    public void writeanswer() {
+
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+        ses.schedule(()-> {
+            spielerJTextAreaHashMap.forEach((Spieler s, JTextArea t) -> {
+
+                JTextArea ta = new JTextArea();
+                ta.setBounds(t.getX(), t.getY()+40,200,75);
+                ta.setBackground(Color.WHITE);
+
+                JButton b = new JButton("ok");
+                b.setBounds(t.getX() + 215, t.getY()+40, 40,75);
+                b.setBackground(Color.green);
+                add(b);
+                add(ta);
+                spielerJTextAreaHashMapanswer.put(s,ta);
+                spielerJButtonHashMap.put(s,b);
+                updateUI();
+            });
+            startAnswer();
+        },5, TimeUnit.SECONDS);
+
+    }
+
+    int j = 0;
+    public void startAnswer() {
+        if(j > Start.getSession().getLoggedInspieler().size()) {
+            j=0;
+            return;
+        }
+
+            spielerJButtonHashMap.forEach((Spieler s, JButton b) -> {
+                b.setBackground(Color.darkGray);
+                b.disable();
+            });
+            spielerJTextAreaHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setBackground(Color.green);
+            spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setBackground(Color.green);
+            spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).enable();
+
+            spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).addActionListener((l)-> {
+                j++;
+                spielerJTextAreaHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setBackground(Color.gray);
+                spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setBackground(Color.gray);
+                spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).disable();
+                System.out.println("ok");
+                startAnswer();
+            } );
+
     }
 
 }
