@@ -1,8 +1,10 @@
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Antwort {
 
-    private String Frage;
+    private int spielerid;
     private String Antwort;
     private int id;
     private Statement st;
@@ -11,12 +13,13 @@ public class Antwort {
         this.st=st;
     }
 
-    public String getFrage() {
-        return Frage;
+    public int getSpielerid() {
+        return spielerid;
     }
 
-    public void setFrage(String frage) {
-        Frage = frage;
+    public void setSpielerid
+            (int spielerid) {
+        this.spielerid=spielerid;
     }
 
     public String getAntwort() {
@@ -41,5 +44,25 @@ public class Antwort {
 
     public void setSt(Statement st) {
         this.st = st;
+    }
+    public static String getFrageDaten( String Antwort) {
+
+        return "SELECT * FROM Antwort WHERE Antwort = '" + Antwort+ "'";
+    }
+
+    public void SetFullRecordAntwort(String Frage, String Antwort){
+        try {
+            ResultSet rs = st.executeQuery(getFrageDaten( Antwort));
+            while (rs.next()) {
+
+                this.id = rs.getInt("id");
+                this.Antwort = rs.getString("Antwort");
+                this.spielerid= rs.getInt("spielerid");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+
     }
 }
