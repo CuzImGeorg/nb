@@ -50,7 +50,7 @@ public class Antwort {
         return "SELECT * FROM Antwort WHERE Antwort = '" + Antwort+ "'";
     }
 
-    public void SetFullRecordAntwort(String Frage, String Antwort){
+    public Antwort SetFullRecordAntwort(String Frage, String Antwort){
         try {
             ResultSet rs = st.executeQuery(getFrageDaten( Antwort));
             while (rs.next()) {
@@ -63,7 +63,7 @@ public class Antwort {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-
+            return this;
     }
 
     public void neueAnswer(String Antwort, int spielerid){
