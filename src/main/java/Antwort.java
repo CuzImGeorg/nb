@@ -65,4 +65,15 @@ public class Antwort {
         }
 
     }
+
+    public void neueAnswer(String Antwort, int spielerid){
+
+        try {
+            st.execute("INSERT INTO Antwort (Antwort, spielerid) VALUES ('"+Antwort+"', '"+spielerid+"')");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
