@@ -11,13 +11,15 @@ public class MainPanel extends JPanel {
 
     MainPanel(){
         menubar= new JMenuBar();
+        setLayout(null);
         setBackground(Color.darkGray);
         add(menubar);
         menuSession();
-
+        setSize(1920,1080);
         admin();
         currentUser();
         menuGobal();
+
     }
     private ArrayList<JButton> barr = new ArrayList<>();
     public void menuSession() {
