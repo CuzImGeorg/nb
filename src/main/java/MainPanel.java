@@ -193,10 +193,12 @@ public class MainPanel extends JPanel {
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
-                    remove(username);
-                    remove(password);
-                    remove(btn);
-                    //TODO fix remove buttons
+                    username.setEnabled(false);
+                    username.setVisible(false);
+                    password.setEnabled(false);
+                    password.setVisible(false);
+                    btn.setEnabled(false);
+                    btn.setVisible(false);
                 });
             });
 
@@ -387,7 +389,7 @@ public class MainPanel extends JPanel {
             spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).enable();
 
             spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).addActionListener((l)-> {
-                j++;
+
                 spielerJTextAreaHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setBackground(Color.gray);
                 spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setBackground(Color.gray);
                 spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).disable();
