@@ -33,21 +33,22 @@ public class Frage {
     }
 
 
-    public void setFullRecord(int id){
+    public Frage setFullRecord(int id){
 
         try {
             ResultSet rs= st.executeQuery(getFrageDaten(id));
             while(rs.next()){
 
                 this.id=rs.getInt("id");
-                frage = rs.getString("Antwort");
-                Antwort = rs.getString("Frage");
+                frage = rs.getString("Frage");
+                Antwort = rs.getString("Antwort");
 
 
             }
         } catch (SQLException ex) {
         }
 
+        return this;
     }
     static void SaveFrage(String frage, String antwort) throws SQLException {
 
@@ -66,7 +67,7 @@ public class Frage {
     }
     static int AnzahlFrage(){
         try {
-            ResultSet rs=st.executeQuery("SELECT COUNT AS siuu frage FROM frage");
+            ResultSet rs=st.executeQuery("SELECT COUNT(id) AS siuu FROM frage");
             while (rs.next()){
                 return rs.getInt("siuu");
             }

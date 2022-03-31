@@ -251,7 +251,7 @@ public class MainPanel extends JPanel {
             panel.updateUI();
             btn.addActionListener(e -> {
                 if(new Spieler().setFullRecordBenutzer(username.getText(), password.getText()).isAdmin()){
-                    System.out.println("ok");
+
                 }else {
                     frame.dispose();
                 }
@@ -273,7 +273,7 @@ public class MainPanel extends JPanel {
 
     private ArrayList<JTextArea> tarr = new ArrayList<>();
     public void currentUser() {
-
+        tarr.clear();
         Start.getSession().getLoggedInspieler().forEach(Spieler::toStringd);
         if(!Start.getSession().getLoggedInspieler().isEmpty()) {
             for (Spieler s : Start.getSession().getLoggedInspieler()) {
@@ -282,6 +282,7 @@ public class MainPanel extends JPanel {
                 t.setText(s.getUsername());
                 t.setBorder(new LineBorder(Color.black, 2));
                 t.setBounds(20, Start.getSession().getLoggedInspieler().indexOf(s) * 40,100,20);
+                t.setFont(new Font("Verdana",1,10));
                 t.setVisible(true);
                 t.setEditable(false);
                 tarr.add(t);
@@ -334,11 +335,12 @@ public class MainPanel extends JPanel {
         }
     }
 
+    private Frage f;
     public void randomquestion() {
         JTextArea frage = new JTextArea();
         Random rdm = new Random();
-
-        frage.setText("Dies ist eine Test Frage die sehr lange ist ohne grund nur um das Programm zu testen :D das ist eine smily der nix kann ");
+        f = new Frage().setFullRecord(rdm.nextInt(Frage.AnzahlFrage()));
+        frage.setText(f.getFrage());
         frage.setLineWrap(true);
         frage.setBackground(Color.darkGray);
         frage.setForeground(Color.white);
@@ -358,6 +360,7 @@ public class MainPanel extends JPanel {
                 JTextArea ta = new JTextArea();
                 ta.setBounds(t.getX(), t.getY()+40,200,75);
                 ta.setBackground(Color.WHITE);
+                ta.setLineWrap(true);
 
                 JButton b = new JButton("ok");
                 b.setBounds(t.getX() + 215, t.getY()+40, 40,75);
@@ -375,8 +378,9 @@ public class MainPanel extends JPanel {
 
     int j = 0;
     public void startAnswer() {
-        if(j > Start.getSession().getLoggedInspieler().size()) {
+        if(j > Start.getSession().getLoggedInspieler().size()-1) {
             j=0;
+            afterAnswer();
             return;
         }
 
@@ -388,14 +392,69 @@ public class MainPanel extends JPanel {
             spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setBackground(Color.green);
             spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).enable();
 
+
             spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).addActionListener((l)-> {
 
                 spielerJTextAreaHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setBackground(Color.gray);
                 spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setBackground(Color.gray);
                 spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).disable();
-                System.out.println("ok");
+                spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setVisible(false);
+                spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).setVisible(false);
+
+                j++;
                 startAnswer();
             } );
+
+    }
+
+    private HashMap<Spieler, JButton> spielerJButtonHashMapAnservote = new HashMap<>();
+    public void afterAnswer() {
+        removeAll();
+        revalidate();
+        repaint();
+        currentUser();
+
+        spielerJTextAreaHashMapanswer.forEach((Spieler s, JTextArea t) -> {
+            JTextArea ta = new JTextArea();
+            ta.setText(t.getText());
+            ta.setBorder(new LineBorder(Color.black, 2));
+            ta.setBounds(1300, Start.getSession().getLoggedInspieler().indexOf(s) * 70,600,60);
+            ta.setLineWrap(true);
+            ta.setFont(new Font("Verdana",1,17));
+            ta.setEditable(false);
+
+
+            JButton votebtn = new JButton("Vote");
+            votebtn.setBorder(new LineBorder(Color.black, 2));
+            votebtn.setBounds(1240, Start.getSession().getLoggedInspieler().indexOf(s) * 70,60,60);
+            votebtn.setFont(new Font("Verdana",1,17));
+            spielerJButtonHashMapAnservote.put(s, votebtn);
+
+            add(ta);
+            add(votebtn);
+        } );
+        vote();
+    }
+
+    int z;
+    public void vote() {
+        if(z > Start.getSession().getLoggedInspieler().size()-1) {
+            z=0;
+            afterAnswer(); // todo aftervote
+            return;
+        }
+        spielerJTextAreaHashMap.get(Start.getSession().getLoggedInspieler().get(z)).setBackground(Color.green);
+        spielerJButtonHashMapAnservote.get(Start.getSession().getLoggedInspieler().get(z)).addActionListener((l)->{
+
+            System.out.println(f.getAntwort());
+            spielerJTextAreaHashMap.get(Start.getSession().getLoggedInspieler().get(z)).setBackground(Color.gray);
+            z++;
+            vote();
+        });
+
+
+
+
 
     }
 
