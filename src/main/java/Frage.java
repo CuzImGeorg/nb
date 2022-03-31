@@ -6,7 +6,7 @@ public class Frage {
     private String frage;
     private String Antwort;
     private int id;
-    private Statement st;
+    private static Statement st;
 
     Frage(){
         st = Start.getDbv().getStatement();
@@ -63,5 +63,16 @@ public class Frage {
         st.execute("DELETE FROM Frage WHERE frage='"+frage+"' AND antwort = '"+antwort+"'");
 
 
+    }
+    static int AnzahlFrage(){
+        try {
+            ResultSet rs=st.executeQuery("SELECT COUNT AS siuu frage FROM frage");
+            while (rs.next()){
+                return rs.getInt("siuu");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    return 69696969;
     }
 }

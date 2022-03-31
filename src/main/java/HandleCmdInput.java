@@ -138,8 +138,10 @@ public class HandleCmdInput {
                 "CREATE TABLE Antwort(\n" +
                 "\n" +
                 "\tid serial PRIMARY KEY,\n" +
-                "\tantwort varchar(255)\n" +
-                "\n" +
+                "\tantwort varchar(255),\n" +
+                "\tspielerid int,\n" +
+                "\tFOREIGN KEY (spielerid) REFERENCES spieler(id),"+
+                "\n"+
                 ");\n" +
                 "CREATE TABLE FrageAntwort(\n" +
                 "\n" +
