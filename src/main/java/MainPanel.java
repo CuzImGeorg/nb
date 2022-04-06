@@ -287,21 +287,28 @@ public class MainPanel extends JPanel {
 
 
                 JButton siuuuu= new JButton();
-                btn.setBorder(new LineBorder(Color.BLACK,2));
-                btn.setBackground(Color.GREEN);
-                btn.setBounds(120, 180,150,30);
-                btn.setVisible(true);
-                btn.setText("Frage Hinzufügen");
-                panel.add(btn);
+                siuuuu.setBorder(new LineBorder(Color.BLACK,2));
+                siuuuu.setBackground(Color.GREEN);
+                siuuuu.setBounds(120, 180,150,30);
+                siuuuu.setVisible(true);
+                siuuuu.setEnabled(true);
+                siuuuu.setText("Frage Hinzufügen");
+                panel.add(siuuuu);
                 panel.updateUI();
-                btn.addActionListener(e1 -> {
+                siuuuu.addActionListener(e1 -> {
 
                     try {
                         Frage.SaveFrage(neueFrage.getText(), FrageZuAntwort.getText());
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
-
+                    neueFrage.setEnabled(false);
+                    neueFrage.setVisible(false);
+                    FrageZuAntwort.setEnabled(false);
+                    FrageZuAntwort.setVisible(false);
+                    siuuuu.setVisible(false);
+                    siuuuu.setEnabled(false);
+                    frame.dispose();
                 });
 
             });

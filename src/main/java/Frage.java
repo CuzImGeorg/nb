@@ -54,7 +54,7 @@ public class Frage {
 
         Statement st= Start.getDbv().getStatement();
 
-        st.execute("INSERT INTO Frage(frage,antwort) VALUES ('"+frage+"','"+antwort+")");
+        st.execute("INSERT INTO Frage(frage,antwort) VALUES ('"+frage+"','"+antwort+"')");
 
     }
     static void DeleteFrage(String frage, String antwort) throws SQLException {
