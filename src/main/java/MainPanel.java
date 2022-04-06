@@ -16,6 +16,7 @@ public class MainPanel extends JPanel {
     Datenbankverbindung db= new Datenbankverbindung();
     Statement st = db.getStatement();
     private ArrayList<Spieler>  spieler= new ArrayList<>();
+    private int spielid, rundeid;
 
     MainPanel(){
         menubar= new JMenuBar();
@@ -143,15 +144,11 @@ public class MainPanel extends JPanel {
                     repaint();
                     gamestart();
 
-
-                    SpielFeld();
                 });
             }
         }
     }
-    public void SpielFeld(){
 
-    }
 
     public void menuGobal() {
         JMenu global = new JMenu("Global");
@@ -331,6 +328,12 @@ public class MainPanel extends JPanel {
     private HashMap<Spieler, JTextArea> spielerJTextAreaHashMapanswer = new HashMap<>();
     private HashMap<Spieler, JButton> spielerJButtonHashMap = new HashMap<>();
     private void gamestart() {
+        try {
+            spielid = AnzahlGames().getInt("spielid");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        rundeid = 1;
         renderPlayers();
         randomquestion();
         writeanswer();
@@ -432,14 +435,17 @@ public class MainPanel extends JPanel {
                 spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).disable();
                 spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setVisible(false);
                 spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).setVisible(false);
-
+                Antwort.neueAnswer(spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText(), Start.getSession().getLoggedInspieler().get(j).getId());
                 j++;
                 startAnswer();
             } );
 
     }
 
-    private HashMap<Spieler, JButton> spielerJButtonHashMapAnservote = new HashMap<>();
+
+    private HashMap<Spieler, JTextArea> spielerJTextAreaHashMapVote = new HashMap<>();
+    private HashMap<JButton, JTextArea> jButtonJTextAreaHashMap = new HashMap<>();
+
     public void afterAnswer() {
         removeAll();
         revalidate();
@@ -454,13 +460,14 @@ public class MainPanel extends JPanel {
             ta.setLineWrap(true);
             ta.setFont(new Font("Verdana",1,17));
             ta.setEditable(false);
-
+            spielerJTextAreaHashMapVote.put(s,ta);
 
             JButton votebtn = new JButton("Vote");
             votebtn.setBorder(new LineBorder(Color.black, 2));
             votebtn.setBounds(1240, Start.getSession().getLoggedInspieler().indexOf(s) * 70,60,60);
             votebtn.setFont(new Font("Verdana",1,17));
-            spielerJButtonHashMapAnservote.put(s, votebtn);
+
+            jButtonJTextAreaHashMap.put(votebtn, ta);
 
             add(ta);
             add(votebtn);
@@ -469,26 +476,23 @@ public class MainPanel extends JPanel {
     }
 
     int z;
+    private HashMap<Spieler, Integer> votes = new HashMap<>();
     public void vote() {
+        jButtonJTextAreaHashMap.forEach((JButton b, JTextArea t) -> {
+            b.removeAll();
+        });
         if(z > Start.getSession().getLoggedInspieler().size()-1) {
             z=0;
-            afterAnswer(); // todo aftervote
             return;
         }
-        spielerJTextAreaHashMap.get(Start.getSession().getLoggedInspieler().get(z)).setBackground(Color.green);
-        spielerJButtonHashMapAnservote.get(Start.getSession().getLoggedInspieler().get(z)).addActionListener((l)->{
+        spielerJTextAreaHashMapVote.get(Start.getSession().getLoggedInspieler().get(z)).setBackground(Color.green);
+        jButtonJTextAreaHashMap.forEach((JButton b, JTextArea t) -> {
+            b.addActionListener((l) -> {
 
-            System.out.println(f.getAntwort());
-            spielerJTextAreaHashMap.get(Start.getSession().getLoggedInspieler().get(z)).setBackground(Color.gray);
-            z++;
-            vote();
-            //
+                z++;
+                vote();
+            });
         });
-
-
-
-
-
     }
 
     public ResultSet AnzahlGames(){
