@@ -104,8 +104,8 @@ return 0;
 
         try {
             Start.getDbv().getStatement().executeQuery("INSERT INTO FrageAntwort(Frageid,Antwortid,rundeid,spielid) VALUEs ("+Frageid+","+Antwortid+","+rundeid+","+spielid+")");
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ignored) {
+
         }
 
     }

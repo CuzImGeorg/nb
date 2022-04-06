@@ -476,19 +476,20 @@ public class MainPanel extends JPanel {
     int z;
     private HashMap<Spieler, Integer> votes = new HashMap<>();
     public void vote() {
-        jButtonJTextAreaHashMap.forEach((JButton b, JTextArea t) -> {
-            b.removeAll();
-        });
-        if(z > Start.getSession().getLoggedInspieler().size()-1) {
-            z=0;
-            return;
-        }
+
         tarr.get(z).setBackground(Color.green);
         jButtonJTextAreaHashMap.forEach((JButton b, JTextArea t) -> {
             b.addActionListener((l) -> {
                 tarr.get(z).setBackground(Color.gray);
                 z++;
-                vote();
+                if(z > Start.getSession().getLoggedInspieler().size()-1) {
+                    z=0;
+                    jButtonJTextAreaHashMap.forEach((JButton b1, JTextArea t1) -> {
+                        b1.disable(); //TODO testen
+                    });
+                    return;
+                }
+                tarr.get(z).setBackground(Color.green);
             });
         });
     }
@@ -496,7 +497,10 @@ public class MainPanel extends JPanel {
     public int AnzahlGames(){
         try {
             ResultSet rs = st.executeQuery("SELECT spielid FROM FrageAntwort ORDER BY spielid DESC LIMIT 1 ");
-             return rs.getInt("spielid");
+            while(rs.next()) {
+                return rs.getInt("spielid");
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

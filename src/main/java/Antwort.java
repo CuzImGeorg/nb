@@ -7,10 +7,10 @@ public class Antwort {
     private int spielerid;
     private String Antwort;
     private int id;
-    private Statement st;
+    private Statement st = Start.getDbv().getStatement();
 
     Antwort(){
-        Start.getDbv().getStatement();
+
     }
 
     public int getSpielerid() {

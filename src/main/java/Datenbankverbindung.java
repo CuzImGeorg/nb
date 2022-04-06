@@ -9,8 +9,8 @@ public class Datenbankverbindung {
     public  Statement statement;
 
     private final String jdbcURL = "jdbc:postgresql://localhost:5432/nobody";
-    private final String username = "postgres";
-    private final String psw = "Admin";
+    private final String username = "admin";
+    private final String psw = "admin";
 
     private boolean debugMode = Start.isDebugMode();
     
