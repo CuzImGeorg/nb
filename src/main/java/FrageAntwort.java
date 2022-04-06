@@ -73,8 +73,9 @@ public class FrageAntwort {
         try {
             ResultSet rs = st.executeQuery(  "SELECT id FROM FrageAntwort WHERE Frageid=" + Frageid+ " AND Antwortid ="+Antwortid+" AND spielid ="+spielid+" AND rundeid = "+rundeid);
 
-
-            return rs.getInt("id");
+            while(rs.next()) {
+                return rs.getInt("id");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
