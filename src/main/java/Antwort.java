@@ -9,8 +9,8 @@ public class Antwort {
     private int id;
     private Statement st;
 
-    Antwort(Statement st){
-        this.st=st;
+    Antwort(){
+        Start.getDbv().getStatement();
     }
 
     public int getSpielerid() {

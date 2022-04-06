@@ -436,6 +436,7 @@ public class MainPanel extends JPanel {
                 spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setVisible(false);
                 spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).setVisible(false);
                 Antwort.neueAnswer(spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText(), Start.getSession().getLoggedInspieler().get(j).getId());
+                FrageAntwort.newFrageAntwort(new Antwort().SetFullRecordAntwort(f.getFrage(), spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText()).getId(), f.getId(), rundeid, spielid);
                 j++;
                 startAnswer();
             } );
@@ -485,10 +486,10 @@ public class MainPanel extends JPanel {
             z=0;
             return;
         }
-        spielerJTextAreaHashMapVote.get(Start.getSession().getLoggedInspieler().get(z)).setBackground(Color.green);
+        tarr.get(z).setBackground(Color.green);
         jButtonJTextAreaHashMap.forEach((JButton b, JTextArea t) -> {
             b.addActionListener((l) -> {
-
+                tarr.get(z).setBackground(Color.gray);
                 z++;
                 vote();
             });
