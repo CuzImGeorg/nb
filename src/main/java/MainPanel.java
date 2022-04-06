@@ -294,6 +294,11 @@ public class MainPanel extends JPanel {
                 btn.setText("Frage Hinzufügen");
                 panel.add(btn);
                 panel.updateUI();
+                btn.addActionListener(e1 -> {
+
+
+
+                });
 
             });
 //

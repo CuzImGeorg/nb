@@ -55,7 +55,7 @@ public class Spieler {
     public Spieler setFullRecordBenutzer(String username, String password) {
 
         try {
-            ResultSet rs = st.executeQuery(getBenutzerDaten(username, password));
+            ResultSet rs = Start.getDbv().getStatement().executeQuery(getBenutzerDaten(username, password));
             while (rs.next()) {
 
                 this.id = rs.getInt("id");
