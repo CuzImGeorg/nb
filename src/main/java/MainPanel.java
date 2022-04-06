@@ -496,7 +496,9 @@ public class MainPanel extends JPanel {
     public int AnzahlGames(){
         try {
             ResultSet rs = st.executeQuery("SELECT spielid FROM FrageAntwort ORDER BY spielid DESC LIMIT 1 ");
-             return rs.getInt("spielid");
+            while (rs.next()) {
+            return rs.getInt("spielid");
+        }
         } catch (SQLException e) {
             e.printStackTrace();
         }
