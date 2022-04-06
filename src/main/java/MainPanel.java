@@ -486,13 +486,14 @@ public class MainPanel extends JPanel {
         });
     }
 
-    public ResultSet AnzahlGames(){
+    public int AnzahlGames(){
         try {
-            return st.executeQuery("SELECT spielid FROM FrageAntwort ORDER BY spielid DESC LIMIT 1 ");
+            ResultSet rs= st.executeQuery("SELECT spielid FROM FrageAntwort ORDER BY spielid DESC LIMIT 1 ");
+            return rs.getInt("spielid");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 
 
