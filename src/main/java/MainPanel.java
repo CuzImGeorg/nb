@@ -329,11 +329,7 @@ public class MainPanel extends JPanel {
     private HashMap<Spieler, JTextArea> spielerJTextAreaHashMapanswer = new HashMap<>();
     private HashMap<Spieler, JButton> spielerJButtonHashMap = new HashMap<>();
     private void gamestart() {
-        try {
-            spielid = AnzahlGames().getInt("spielid");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        spielid = AnzahlGames();
         rundeid = 1;
         renderPlayers();
         randomquestion();
@@ -497,13 +493,14 @@ public class MainPanel extends JPanel {
         });
     }
 
-    public ResultSet AnzahlGames(){
+    public int AnzahlGames(){
         try {
-            return st.executeQuery("SELECT spielid FROM FrageAntwort ORDER BY spielid DESC LIMIT 1 ");
+            ResultSet rs = st.executeQuery("SELECT spielid FROM FrageAntwort ORDER BY spielid DESC LIMIT 1 ");
+             return rs.getInt("spielid");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 
 }
