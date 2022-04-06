@@ -68,6 +68,19 @@ public class FrageAntwort {
         return "SELECT * FROM FrageAntwort WHERE id = '" + id+ "'";
     }
 
+    public int getIDFrageAntwort(int Frageid, int Antwortid, int spielid, int rundeid){
+
+        try {
+            ResultSet rs = st.executeQuery(  "SELECT id FROM FrageAntwort WHERE Frageid=" + Frageid+ " AND Antwortid ="+Antwortid+" AND spielid ="+spielid+" AND rundeid = "+rundeid);
+
+
+            return rs.getInt("id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+return 0;
+    }
+
     public FrageAntwort SetFullRecordAntwort(int id){
         try {
             ResultSet rs = st.executeQuery(getsiuu(id));
@@ -85,6 +98,7 @@ public class FrageAntwort {
         }
         return this;
     }
+
 
     static void newFrageAntwort(int Antwortid, int Frageid, int rundeid, int spielid){
 
