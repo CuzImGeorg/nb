@@ -216,6 +216,7 @@ public class MainPanel extends JPanel {
             JDialog frame = new JDialog();
             JPanel panel = new JPanel();
             frame.setContentPane(panel);
+            frame.setLocation(550,100);
             frame.setSize(400,600);
             frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             frame.setVisible(true);
