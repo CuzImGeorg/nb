@@ -484,11 +484,6 @@ public class MainPanel extends JPanel {
             vote();
             //
         });
-
-
-
-
-
     }
 
     public ResultSet AnzahlGames(){
@@ -499,6 +494,7 @@ public class MainPanel extends JPanel {
         }
         return null;
     }
+
 
 }
 

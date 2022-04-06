@@ -86,4 +86,14 @@ public class FrageAntwort {
         return this;
     }
 
+    static void newFrageAntwort(int Antwortid, int Frageid, int rundeid, int spielid){
+
+        try {
+            Start.getDbv().getStatement().executeQuery("INSERT INTO FrageAntwort(Frageid,Antwortid,rundeid,spielid) VALUEs ("+Frageid+","+Antwortid+","+rundeid+","+spielid+")");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
   }
