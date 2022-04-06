@@ -296,7 +296,11 @@ public class MainPanel extends JPanel {
                 panel.updateUI();
                 btn.addActionListener(e1 -> {
 
-
+                    try {
+                        Frage.SaveFrage(neueFrage.getText(), FrageZuAntwort.getText());
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
 
                 });
 
