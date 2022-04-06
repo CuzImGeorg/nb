@@ -450,6 +450,7 @@ public class MainPanel extends JPanel {
             spielerJTextAreaHashMap.get(Start.getSession().getLoggedInspieler().get(z)).setBackground(Color.gray);
             z++;
             vote();
+            //
         });
 
 
