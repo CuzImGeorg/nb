@@ -1,7 +1,9 @@
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -11,7 +13,10 @@ import java.util.concurrent.TimeUnit;
 
 public class MainPanel extends JPanel {
     JMenuBar menubar;
+    Datenbankverbindung db= new Datenbankverbindung();
+    Statement st = db.getStatement();
     private ArrayList<Spieler>  spieler= new ArrayList<>();
+    private int spielid, rundeid;
 
     MainPanel(){
         menubar= new JMenuBar();
@@ -139,15 +144,11 @@ public class MainPanel extends JPanel {
                     repaint();
                     gamestart();
 
-
-                    SpielFeld();
                 });
             }
         }
     }
-    public void SpielFeld(){
 
-    }
 
     public void menuGobal() {
         JMenu global = new JMenu("Global");
@@ -212,9 +213,10 @@ public class MainPanel extends JPanel {
         admPanel.setLocation(20,2);
         admPanel.setBorder(new LineBorder(Color.BLACK,2));
         admPanel.addActionListener((l)-> {
-            JFrame frame = new JFrame("Admin Panel");
+            JDialog frame = new JDialog();
             JPanel panel = new JPanel();
             frame.setContentPane(panel);
+            frame.setLocation(550,100);
             frame.setSize(400,600);
             frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             frame.setVisible(true);
@@ -256,12 +258,40 @@ public class MainPanel extends JPanel {
                     frame.dispose();
                 }
 
-                password.setVisible(false);
+             password.setVisible(false);
                 password.setEnabled(false);
-                username.setVisible(false);
+               username.setVisible(false);
                 username.setEnabled(false);
                 btn.setVisible(false);
                 btn.setEnabled(false);
+
+
+
+
+                JTextField neueFrage= new JTextField();
+                neueFrage.setBorder(new LineBorder(Color.BLACK,2));
+                neueFrage.setBackground(Color.white);
+                neueFrage.setBounds(50, 80,300,30);
+                neueFrage.setText("neue Frage eingeben");
+                panel.add(neueFrage);
+
+
+                JTextField FrageZuAntwort= new JTextField();
+                FrageZuAntwort.setBorder(new LineBorder(Color.BLACK,2));
+                FrageZuAntwort.setBackground(Color.white);
+                FrageZuAntwort.setBounds(50, 130,300,30);
+                FrageZuAntwort.setText("Antwort zu Frage");
+                panel.add(FrageZuAntwort);
+
+
+                JButton siuuuu= new JButton();
+                btn.setBorder(new LineBorder(Color.BLACK,2));
+                btn.setBackground(Color.GREEN);
+                btn.setBounds(120, 180,150,30);
+                btn.setVisible(true);
+                btn.setText("Frage Hinzufügen");
+                panel.add(btn);
+                panel.updateUI();
 
             });
 //
@@ -299,6 +329,8 @@ public class MainPanel extends JPanel {
     private HashMap<Spieler, JTextArea> spielerJTextAreaHashMapanswer = new HashMap<>();
     private HashMap<Spieler, JButton> spielerJButtonHashMap = new HashMap<>();
     private void gamestart() {
+        spielid = AnzahlGames();
+        rundeid = 1;
         renderPlayers();
         randomquestion();
         writeanswer();
@@ -400,14 +432,18 @@ public class MainPanel extends JPanel {
                 spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).disable();
                 spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setVisible(false);
                 spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).setVisible(false);
-
+                Antwort.neueAnswer(spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText(), Start.getSession().getLoggedInspieler().get(j).getId());
+                FrageAntwort.newFrageAntwort(new Antwort().SetFullRecordAntwort(f.getFrage(), spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText()).getId(), f.getId(), rundeid, spielid);
                 j++;
                 startAnswer();
             } );
 
     }
 
-    private HashMap<Spieler, JButton> spielerJButtonHashMapAnservote = new HashMap<>();
+
+    private HashMap<Spieler, JTextArea> spielerJTextAreaHashMapVote = new HashMap<>();
+    private HashMap<JButton, JTextArea> jButtonJTextAreaHashMap = new HashMap<>();
+
     public void afterAnswer() {
         removeAll();
         revalidate();
@@ -422,13 +458,14 @@ public class MainPanel extends JPanel {
             ta.setLineWrap(true);
             ta.setFont(new Font("Verdana",1,17));
             ta.setEditable(false);
-
+            spielerJTextAreaHashMapVote.put(s,ta);
 
             JButton votebtn = new JButton("Vote");
             votebtn.setBorder(new LineBorder(Color.black, 2));
             votebtn.setBounds(1240, Start.getSession().getLoggedInspieler().indexOf(s) * 70,60,60);
             votebtn.setFont(new Font("Verdana",1,17));
-            spielerJButtonHashMapAnservote.put(s, votebtn);
+
+            jButtonJTextAreaHashMap.put(votebtn, ta);
 
             add(ta);
             add(votebtn);
@@ -437,25 +474,37 @@ public class MainPanel extends JPanel {
     }
 
     int z;
+    private HashMap<Spieler, Integer> votes = new HashMap<>();
     public void vote() {
-        if(z > Start.getSession().getLoggedInspieler().size()-1) {
-            z=0;
-            afterAnswer(); // todo aftervote
-            return;
-        }
-        spielerJTextAreaHashMap.get(Start.getSession().getLoggedInspieler().get(z)).setBackground(Color.green);
-        spielerJButtonHashMapAnservote.get(Start.getSession().getLoggedInspieler().get(z)).addActionListener((l)->{
 
-            System.out.println(f.getAntwort());
-            spielerJTextAreaHashMap.get(Start.getSession().getLoggedInspieler().get(z)).setBackground(Color.gray);
-            z++;
-            vote();
+        tarr.get(z).setBackground(Color.green);
+        jButtonJTextAreaHashMap.forEach((JButton b, JTextArea t) -> {
+            b.addActionListener((l) -> {
+                tarr.get(z).setBackground(Color.gray);
+                z++;
+                if(z > Start.getSession().getLoggedInspieler().size()-1) {
+                    z=0;
+                    jButtonJTextAreaHashMap.forEach((JButton b1, JTextArea t1) -> {
+                        b1.disable(); //TODO testen
+                    });
+                    return;
+                }
+                tarr.get(z).setBackground(Color.green);
+            });
         });
+    }
 
+    public int AnzahlGames(){
+        try {
+            ResultSet rs = st.executeQuery("SELECT spielid FROM FrageAntwort ORDER BY spielid DESC LIMIT 1 ");
+            while(rs.next()) {
+                return rs.getInt("spielid");
+            }
 
-
-
-
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

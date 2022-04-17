@@ -7,10 +7,10 @@ public class Antwort {
     private int spielerid;
     private String Antwort;
     private int id;
-    private Statement st;
+    private Statement st = Start.getDbv().getStatement();
 
-    Antwort(Statement st){
-        this.st=st;
+    Antwort(){
+
     }
 
     public int getSpielerid() {
@@ -66,10 +66,10 @@ public class Antwort {
             return this;
     }
 
-    public void neueAnswer(String Antwort, int spielerid){
+    public static void neueAnswer(String Antwort, int spielerid){
 
         try {
-            st.execute("INSERT INTO Antwort (Antwort, spielerid) VALUES ('"+Antwort+"', '"+spielerid+"')");
+            Start.getDbv().getStatement().execute("INSERT INTO Antwort (Antwort, spielerid) VALUES ('"+Antwort+"', '"+spielerid+"')");
         } catch (SQLException e) {
             e.printStackTrace();
         }
