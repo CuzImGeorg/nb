@@ -8,7 +8,7 @@ public class Session {
 
 
     public void addSpieler(String username, String pwd) {
-            if(!Spieler.checkIfPlayereXites(username, pwd)) return;
+           if(!Spieler.checkIfPlayereXites(username, pwd)) return;
             loggedInspieler.add(new Spieler().setFullRecordBenutzer( username, pwd));
 
     }
