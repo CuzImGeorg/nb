@@ -26,9 +26,6 @@ public class Datenbankverbindung {
         }
     }
 
-    public  Connection getConn() {
-        return conn;
-    }
 
     public  Statement getStatement() {
         return statement;
