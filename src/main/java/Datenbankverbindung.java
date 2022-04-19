@@ -6,10 +6,10 @@ import java.sql.Statement;
 public class Datenbankverbindung {
 
     private  Connection conn;
-    public  Statement statement;
+    private   Statement statement;
 
     private final String jdbcURL = "jdbc:postgresql://localhost:5432/nobody";
-    private final String username = "admin";
+    private final String username = "postgres";
     private final String psw = "admin";
 
     private boolean debugMode = Start.isDebugMode();
@@ -31,15 +31,5 @@ public class Datenbankverbindung {
         return statement;
     }
 
-    public String getJdbcURL() {
-        return jdbcURL;
-    }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPsw() {
-        return psw;
-    }
 }

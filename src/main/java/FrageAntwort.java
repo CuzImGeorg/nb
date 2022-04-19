@@ -79,7 +79,7 @@ public class FrageAntwort {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-return 0;
+        return 0;
     }
 
     public FrageAntwort SetFullRecordAntwort(int id){

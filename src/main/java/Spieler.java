@@ -103,9 +103,7 @@ public class Spieler {
     static void DeleteUser(String username, String password) throws SQLException {
 
         Statement st = Start.getDbv().getStatement();
-
         st.execute("DELETE FROM Spieler WHERE username ='" + username + "' AND password = '" + password + "'");
-
 
     }
 
@@ -127,9 +125,7 @@ public class Spieler {
                 '}');
     }
 
-    public void equals(Spieler s) {
 
-    }
 
 
 }

@@ -6,8 +6,8 @@ public class Start {
     public static void main(String[] args) {
 //        if(args[0].equalsIgnoreCase("debug true")) debugMode = true;
         session = new Session();
-       main = new MainFrame();
          dbv = new Datenbankverbindung();
+       main = new MainFrame();
         HandleCmdInput hci = new HandleCmdInput();
 
         hci.input();

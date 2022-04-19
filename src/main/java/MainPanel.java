@@ -1,23 +1,18 @@
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class MainPanel extends JPanel {
-    JMenuBar menubar;
-    Datenbankverbindung db= new Datenbankverbindung();
-    Statement st = db.getStatement();
+    private final JMenuBar menubar;
+    private Datenbankverbindung db= new Datenbankverbindung();
     private ArrayList<Spieler>  spieler= new ArrayList<>();
     private int spielid, rundeid;
+    private final Abfrafgen abfrafgen = new Abfrafgen();
 
     MainPanel(){
         menubar= new JMenuBar();
@@ -292,7 +287,7 @@ public class MainPanel extends JPanel {
                 btn.setVisible(true);
                 btn.setText("Frage Hinzufügen");
                 panel.add(btn);
-                panel.updateUI();
+                panel.updateUI(); //TODO FIX
 
             });
 //
@@ -334,12 +329,35 @@ public class MainPanel extends JPanel {
         for(Spieler s : Start.getSession().getLoggedInspieler()) {
             spielerPunkteHashMap.put(s,0);
         }
-        spielid = AnzahlGames()+1;
+        spielid = abfrafgen.AnzahlGames()+1;
         rundeid = 1;
-        renderPlayers();
-        randomquestion();
-        writeanswer();
+        renderRunde();
+//        renderPlayers();
+////        renderPlayers();
+////        randomquestion();
+////        writeanswer();
 
+    }
+
+    private void renderRunde() {
+        JLabel runde = new JLabel();
+        runde.setText("RUNDE " + rundeid);
+        runde.setBackground(Color.darkGray);
+        runde.setBounds(700,400,500,200);
+        runde.setForeground(Color.black);
+        runde.setFont(new Font("Verdana",1,50));
+        add(runde);
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+        ses.schedule(()-> {
+            remove(runde);
+            revalidate();
+            repaint();
+            renderPlayers();
+            renderPlayers();
+            randomquestion();
+            writeanswer();
+
+        },5,TimeUnit.SECONDS);
     }
 
     private void renderPlayers() {
@@ -376,7 +394,7 @@ public class MainPanel extends JPanel {
     public void randomquestion() {
         JTextArea frage = new JTextArea();
         Random rdm = new Random();
-        f = new Frage().setFullRecord(rdm.nextInt(Frage.AnzahlFrage()));
+        f = new Frage().setFullRecord(rdm.nextInt(abfrafgen.getAnzahlFrage()));
         frage.setText(f.getFrage());
         frage.setLineWrap(true);
         frage.setBackground(Color.darkGray);
@@ -449,12 +467,13 @@ public class MainPanel extends JPanel {
     private HashMap<Spieler, JTextArea> spielerJTextAreaHashMapVote = new HashMap<>();
     private HashMap<JButton, JTextArea> jButtonJTextAreaHashMap = new HashMap<>();
 
+    private JTextArea taRA;
     public void afterAnswer() {
         removeAll();
         revalidate();
         repaint();
         currentUser();
-        JTextArea taRA = new JTextArea();
+        taRA = new JTextArea();
         taRA.setText(f.getAntwort());
         taRA.setBorder(new LineBorder(Color.black, 2));
         taRA.setLineWrap(true);
@@ -491,28 +510,33 @@ public class MainPanel extends JPanel {
         } );
 
         ArrayList<Integer> remainNumbers = new ArrayList<>();
-        jButtonJTextAreaHashMap.forEach((JButton b, JTextArea ta) -> {
-            remainNumbers.add(remainNumbers.size());
-        });
+//        jButtonJTextAreaHashMap.forEach((JButton b, JTextArea ta) -> {
+//            remainNumbers.add(remainNumbers.size());
+//        });
+        for(int i = 0; i < jButtonJTextAreaHashMap.size(); i++){
+            remainNumbers.add(i);
+        }
         int l = remainNumbers.size()+1; //TODO fix this
 
         jButtonJTextAreaHashMap.forEach((JButton b, JTextArea ta) -> {
             Random rdm = new Random();
             int r =rdm.nextInt(l);
             while (!remainNumbers.contains(r)) {
-                r =rdm.nextInt(remainNumbers.size());
+                r =rdm.nextInt(l);
+
             }
             remainNumbers.remove(remainNumbers.indexOf(r));
             ta.setBounds(1300, r*70, 600,60);
             b.setBounds(1240, r*70, 60,60);
-            System.out.println(remainNumbers);
+
         });
 
         vote();
     }
 
     int z;
-    private HashMap<Spieler, Integer> votes = new HashMap<>();
+    private HashMap<Spieler, JTextArea> votes = new HashMap<>(); //INteger = frageantwortid
+    private HashMap<Spieler, Integer> spielerPunkteHashMap = new HashMap<>();
     public void vote() {
 
         tarr.get(z).setBackground(Color.green);
@@ -521,7 +545,15 @@ public class MainPanel extends JPanel {
                 tarr.get(z).setBackground(Color.gray);
 
                 SpielerVote.setSpielerVote(Start.getSession().getLoggedInspieler().get(z).getId(), FrageAntwort.getIDFrageAntwort(f.getId(), new Antwort().SetFullRecordAntwort(f.getFrage(), spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText()).getId(), spielid, rundeid ));
-                votes.put(Start.getSession().getLoggedInspieler().get(z), FrageAntwort.getIDFrageAntwort(f.getId(), new Antwort().SetFullRecordAntwort(f.getFrage(), spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText()).getId(), spielid, rundeid ) );
+               // votes.put(Start.getSession().getLoggedInspieler().get(z), FrageAntwort.getIDFrageAntwort(f.getId(), new Antwort().SetFullRecordAntwort(f.getFrage(), spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText()).getId(), spielid, rundeid ) );
+               votes.put(Start.getSession().getLoggedInspieler().get(z), t);
+               if(t.equals(taRA)) {
+                   int punkte = spielerPunkteHashMap.get(Start.getSession().getLoggedInspieler().get(z)) + 2;
+                   spielerPunkteHashMap.remove(Start.getSession().getLoggedInspieler().get(z));
+                   spielerPunkteHashMap.put(Start.getSession().getLoggedInspieler().get(z),punkte);
+               }
+                //TODO punkete vergabe fixen
+
                 z++;
                 if(z > Start.getSession().getLoggedInspieler().size()-1) {
                     z=0;
@@ -536,12 +568,16 @@ public class MainPanel extends JPanel {
         });
     }
 
-    private HashMap<Spieler, Integer> spielerPunkteHashMap = new HashMap<>();
+
+
     public void afterVote() {
+        System.out.println(spielerPunkteHashMap);
         removeAll();
         revalidate();
         repaint();
-        votes.forEach((Spieler s, Integer id) -> {
+        votes.forEach((Spieler s, JTextArea id) -> {
+            int punklte = 0;
+
             JTextArea t = new JTextArea();
             t.setText(s.getUsername());
             t.setBorder(new LineBorder(Color.black, 10));
@@ -549,25 +585,41 @@ public class MainPanel extends JPanel {
             t.setFont(new Font("Verdana",1,35));
             t.setVisible(true);
             t.setEditable(false);
+
+            JTextArea punkte = new JTextArea();
+            punkte.setText("+1");
+            punkte.setBounds(1220, Start.getSession().getLoggedInspieler().indexOf(s) * 110,70,70);
+            punkte.setFont(new Font("Verdana",1,35));
+            punkte.setBackground(Color.darkGray);
+            punkte.setForeground(Color.black);
+            punkte.setVisible(true);
+            punkte.setEditable(false);
+
+
+
             add(t);
+            add(punkte);
             updateUI();
         });
-
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+        ses.schedule(()-> {
+            repeeat();
+        },5 , TimeUnit.SECONDS);
 
     }
 
-    public int AnzahlGames(){
-        try {
-            ResultSet rs = st.executeQuery("SELECT spielid FROM FrageAntwort ORDER BY spielid DESC LIMIT 1 ");
-            while(rs.next()) {
-                return rs.getInt("spielid");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
+    private void repeeat() {
+        removeAll();
+        revalidate();
+        repaint();
+        rundeid++;
+        spielerJTextAreaHashMapanswer.clear();
+        spielerJButtonHashMap.clear();
+        spielerJTextAreaHashMapVote.clear();
+        spielerJTextAreaHashMap.clear();
+        jButtonJTextAreaHashMap.clear();
+        //TODO bo vieleicht geaths jo
+        renderRunde();
     }
-
 }
 
