@@ -68,10 +68,10 @@ public class FrageAntwort {
         return "SELECT * FROM FrageAntwort WHERE id = '" + id+ "'";
     }
 
-    public int getIDFrageAntwort(int Frageid, int Antwortid, int spielid, int rundeid){
+    public static int getIDFrageAntwort(int Frageid, int Antwortid, int spielid, int rundeid){
 
         try {
-            ResultSet rs = st.executeQuery(  "SELECT id FROM FrageAntwort WHERE Frageid=" + Frageid+ " AND Antwortid ="+Antwortid+" AND spielid ="+spielid+" AND rundeid = "+rundeid);
+            ResultSet rs = Start.getDbv().getStatement().executeQuery(  "SELECT id FROM FrageAntwort WHERE Frageid=" + Frageid+ " AND Antwortid ="+Antwortid+" AND spielid ="+spielid+" AND rundeid = "+rundeid);
 
             while(rs.next()) {
                 return rs.getInt("id");
@@ -79,7 +79,7 @@ public class FrageAntwort {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-return 0;
+        return 0;
     }
 
     public FrageAntwort SetFullRecordAntwort(int id){
@@ -105,8 +105,8 @@ return 0;
 
         try {
             Start.getDbv().getStatement().executeQuery("INSERT INTO FrageAntwort(Frageid,Antwortid,rundeid,spielid) VALUEs ("+Frageid+","+Antwortid+","+rundeid+","+spielid+")");
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ignored) {
+
         }
 
     }

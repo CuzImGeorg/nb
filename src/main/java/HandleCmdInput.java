@@ -6,6 +6,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class HandleCmdInput {
+    //Nur für DEBUG
     private String cmds ="1-> Neuen Spieer Account erstellen\n" +
             "2-> Account löschen\n" +
             "3-> Neen Admin Account löschen\n" +

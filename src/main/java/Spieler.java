@@ -84,17 +84,15 @@ public class Spieler {
     static boolean checkIfPlayereXites(String username, String password) {
         try {
             ResultSet rs = Start.getDbv().getStatement().executeQuery(getBenutzerDaten(username, password));
-            while (rs.next()) {
-
-
-                 String username2 = rs.getString("username");
-                String password2 = rs.getString("password");
-
-                if(!username2.equalsIgnoreCase(username) || !password2.equalsIgnoreCase(password2)){
+//            while (rs.next()) {
+//
+//
+//                 String username2 = rs.getString("username");
+//                String password2 = rs.getString("password");
+//
+                if(!rs.next()){
                     return false;
                 }else return true;
-
-            }
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -105,9 +103,7 @@ public class Spieler {
     static void DeleteUser(String username, String password) throws SQLException {
 
         Statement st = Start.getDbv().getStatement();
-
         st.execute("DELETE FROM Spieler WHERE username ='" + username + "' AND password = '" + password + "'");
-
 
     }
 
@@ -129,9 +125,7 @@ public class Spieler {
                 '}');
     }
 
-    public void equals(Spieler s) {
 
-    }
 
 
 }

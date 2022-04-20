@@ -65,6 +65,8 @@ public class Frage {
 
 
     }
+
+    @Deprecated
     static int AnzahlFrage(){
         try {
             ResultSet rs=st.executeQuery("SELECT COUNT(id) AS siuu FROM frage");

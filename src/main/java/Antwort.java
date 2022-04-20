@@ -7,11 +7,8 @@ public class Antwort {
     private int spielerid;
     private String Antwort;
     private int id;
-    private Statement st;
+    private Statement st = Start.getDbv().getStatement();
 
-    Antwort(){
-        Start.getDbv().getStatement();
-    }
 
     public int getSpielerid() {
         return spielerid;
@@ -38,14 +35,7 @@ public class Antwort {
         this.id = id;
     }
 
-    public Statement getSt() {
-        return st;
-    }
-
-    public void setSt(Statement st) {
-        this.st = st;
-    }
-    public static String getFrageDaten( String Antwort) {
+    private  String getFrageDaten( String Antwort) {
 
         return "SELECT * FROM Antwort WHERE Antwort = '" + Antwort+ "'";
     }
