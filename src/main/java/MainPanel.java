@@ -1,6 +1,10 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -13,20 +17,49 @@ public class MainPanel extends JPanel {
     private ArrayList<Spieler>  spieler= new ArrayList<>();
     private int spielid, rundeid;
     private final Abfrafgen abfrafgen = new Abfrafgen();
+    private  LoadinScreen ls;
 
     MainPanel(){
+        ls = new LoadinScreen();
+        ls.start();
+
+        try {
+            hg = ImageIO.read(new File("src/main/java/background.png"));
+            bg = ImageIO.read(new File("src/main/java/bg.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         menubar= new JMenuBar();
         setSize(1920,1080);
         setBackground(Color.darkGray);
-        add(menubar);
-        menuSession();
 
-        admin();
-        currentUser();
-        menuGobal();
+        add(menubar);
+        load();
+
+    }
+
+    public void load() {
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+        ses.scheduleAtFixedRate(()-> {
+            if(ls.getState()<100) {
+                updateUI();
+            }else {
+                updateUI();
+
+                menuSession();
+                admin();
+                currentUser();
+                menuGobal();
+                updateUI();
+                ses.shutdown();
+            }
+        },0,10,TimeUnit.MILLISECONDS);
     }
     private ArrayList<JButton> barr = new ArrayList<>();
     public void menuSession() {
+
         JMenu menu= new JMenu("session");
         JMenuItem item= new JMenuItem("Add Player to session");
         item.addActionListener(l -> {
@@ -411,6 +444,7 @@ public class MainPanel extends JPanel {
         frage.setBackground(Color.darkGray);
         frage.setForeground(Color.white);
         frage.setFont(new Font("Verdana",1,25));
+        frage.setOpaque(false);
         frage.setBounds(760,500,400,300);
         frage.setEditable(false);
 
@@ -603,6 +637,7 @@ public class MainPanel extends JPanel {
             punkte.setFont(new Font("Verdana",1,35));
             punkte.setBackground(Color.darkGray);
             punkte.setForeground(Color.black);
+            punkte.setOpaque(false);
             punkte.setVisible(true);
             punkte.setEditable(false);
 
@@ -664,6 +699,25 @@ public class MainPanel extends JPanel {
             add(punkte);
             updateUI();
         } );
+    }
+    BufferedImage hg;
+    BufferedImage bg;
+    @Override
+    protected void paintComponent(Graphics g) {
+
+
+
+        if(ls.getState() < 100) {
+            g.drawImage(hg, 0, 0, 1920, 1080, null);
+            g.drawImage(ls.getHg(), 660, 860, 600, 80, null);
+            g.setColor(Color.green);
+            g.fillRect(713,885,ls.getState()*5,30);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Verdana",1,25));
+            g.drawString(ls.getState() + "%", 950,980);
+        }else {
+            g.drawImage(bg, 0, 0, 1920, 1080, null);
+        }
     }
 }
 
