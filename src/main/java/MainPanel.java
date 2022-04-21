@@ -188,46 +188,7 @@ public class MainPanel extends JPanel {
         }
         barr.clear();
 
-            for (int i = 0; i < spieler.size(); i++) {
-                JButton BtnRemove= new JButton();
-                BtnRemove.setBorder(new LineBorder(Color.BLACK,2));
-                BtnRemove.setBackground(Color.GREEN);
-                BtnRemove.setBounds(520, i*60+20,80,40);
-                BtnRemove.setVisible(true);
-                BtnRemove.setText("Remove");
-                int j = i;
-                BtnRemove.addActionListener((a)-> {
-//                    for(JTextArea  ta: tarr) {
-//                        remove(ta);
-//                    }
-
-
-
-                    Start.getSession().getLoggedInspieler().remove(j);
-                    for(JTextArea ta : tarr) {
-
-
-                        ta.setVisible(false);
-                        updateUI();
-                        revalidate();
-                        repaint();
-
-                    }
-                    currentUser();
-                    updateUI();
-                    remove(BtnRemove);
-                    for(JButton b: barr) {
-                        remove(b);
-                    }
-
-                    barr.clear();
-                });
-                barr.add(BtnRemove);
-                add(BtnRemove);
-                setLayout(null);
-            }
-            updateUI();
-        }
+    }
 
 
 
@@ -499,7 +460,24 @@ public class MainPanel extends JPanel {
                 t.setVisible(true);
                 t.setEditable(false);
                 tarr.add(t);
+
+                JButton removeBTN = new JButton("REMOVE");
+                removeBTN.setBorder(new LineBorder(Color.black, 2));
+                removeBTN.setBounds(530, Start.getSession().getLoggedInspieler().indexOf(s) * 60+20,120,40);
+                removeBTN.setBackground(Color.green);
+                removeBTN.setFont(new Font("Verdana",1,20));
+                removeBTN.setVisible(true);
+                removeBTN.addActionListener((l)-> {
+                    Start.getSession().getLoggedInspieler().remove(s);
+                    remove(t);
+                    remove(removeBTN);
+                    currentUser();
+                    updateUI();
+                });
+
+
                 add(t);
+                add(removeBTN);
                 updateUI();
             }
         }
@@ -539,7 +517,6 @@ public class MainPanel extends JPanel {
             revalidate();
             repaint();
             renderPlayers();
-            renderPlayers();
             randomquestion();
             writeanswer();
 
@@ -547,7 +524,6 @@ public class MainPanel extends JPanel {
     }
 
     private void renderPlayers() {
-        //TODO wenn zeit mochen dass dynamisch spieerahnzal isch :D
         if(!Start.getSession().getLoggedInspieler().isEmpty()) {
             switch (Start.getSession().getLoggedInspieler().size()) {
                 case 2 -> {
@@ -733,7 +709,7 @@ public class MainPanel extends JPanel {
     public void randomquestion() {
         JTextArea frage = new JTextArea();
         Random rdm = new Random();
-        f = new Frage().setFullRecord(rdm.nextInt(abfrafgen.getAnzahlFrage()));
+        f = new Frage().setFullRecord(rdm.nextInt(abfrafgen.getAnzahlFrage()-1));
         frage.setText(f.getFrage());
         frage.setLineWrap(true);
         frage.setBackground(Color.darkGray);
@@ -856,7 +832,7 @@ public class MainPanel extends JPanel {
         for(int i = 0; i < jButtonJTextAreaHashMap.size(); i++){
             remainNumbers.add(i);
         }
-        int l = remainNumbers.size()+1; //TODO fix this
+        int l = remainNumbers.size()+1;
 
         jButtonJTextAreaHashMap.forEach((JButton b, JTextArea ta) -> {
             Random rdm = new Random();
@@ -902,7 +878,7 @@ public class MainPanel extends JPanel {
                 if(z > Start.getSession().getLoggedInspieler().size()-1) {
                     z=0;
                     jButtonJTextAreaHashMap.forEach((JButton b1, JTextArea t1) -> {
-                        b1.disable(); //TODO testen
+                        b1.disable();
                     });
                     afterVote();
                     return;
@@ -975,9 +951,9 @@ public class MainPanel extends JPanel {
             renderRunde();
         }
     }
-    int i = 0;
+    int i;
     private void afterGame() {
-
+                         i = 0;
                         spielerPunkteHashMap.entrySet().stream().sorted((k1, k2) -> k2.getValue().compareTo(k1.getValue()));
                     ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
                     ses.schedule(()-> {
@@ -1022,18 +998,23 @@ public class MainPanel extends JPanel {
     private void playAgian() {
         JButton playAgian = new JButton("PLAY AGIAN");
         playAgian.setBorder(new LineBorder(Color.black, 10));
-        playAgian.setBounds(550, 900,400,80);
+        playAgian.setBounds(550, 850,600,80);
         playAgian.setFont(new Font("Verdana",1,35));
         playAgian.setVisible(true);
         playAgian.setBackground(new Color(0xAC61C9));
         playAgian.setForeground(new Color(0x351257));
         add(playAgian);
         playAgian.addActionListener((l)-> {
-
+            removeAll();
+            revalidate();
+            repaint();
+            ls = new LoadinScreen();
+            ls.start();
+            load();
         });
         JButton BackToMainMenu = new JButton("BACK TO MAIN MENU");
         BackToMainMenu.setBorder(new LineBorder(Color.black, 10));
-        BackToMainMenu.setBounds(550, 1000,400,80);
+        BackToMainMenu.setBounds(550, 950,600,80);
         BackToMainMenu.setFont(new Font("Verdana",1,35));
         BackToMainMenu.setVisible(true);
         BackToMainMenu.setBackground(new Color(0xAC61C9));
