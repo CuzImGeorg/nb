@@ -224,7 +224,7 @@ public class MainPanel extends JPanel {
                 setLayout(null);
             }
             updateUI();
-        });
+        }
 
 
 
