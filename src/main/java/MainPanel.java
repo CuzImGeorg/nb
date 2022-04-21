@@ -723,7 +723,7 @@ public class MainPanel extends JPanel {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            g.setColor(Color.green);
+            g.setColor(Color.WHITE);
             g.fillRect(713,885,ls.getState()*5,30);
             g.setColor(Color.WHITE);
             g.setFont(new Font("Verdana",1,25));
