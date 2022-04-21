@@ -322,6 +322,8 @@ public class MainPanel extends JPanel {
                 siuuuu.addActionListener((l2)-> {
                     try {
                         Frage.SaveFrage(neueFrage.getText(), FrageZuAntwort.getText());
+                        neueFrage.setText("neue Frage eingeben");
+                        FrageZuAntwort.setText("Antwort zu Frage");
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
@@ -582,6 +584,7 @@ public class MainPanel extends JPanel {
     int z;
     private HashMap<Spieler, JTextArea> votes = new HashMap<>(); //INteger = frageantwortid
     private HashMap<Spieler, Integer> spielerPunkteHashMap = new HashMap<>();
+    private HashMap<Spieler, Boolean> ifpunkteplus = new HashMap<>();
     public void vote() {
 
         tarr.get(z).setBackground(Color.green);
@@ -596,6 +599,9 @@ public class MainPanel extends JPanel {
                    int punkte = spielerPunkteHashMap.get(Start.getSession().getLoggedInspieler().get(z)) +1;
                    spielerPunkteHashMap.remove(Start.getSession().getLoggedInspieler().get(z));
                    spielerPunkteHashMap.put(Start.getSession().getLoggedInspieler().get(z),punkte);
+                   ifpunkteplus.put(Start.getSession().getLoggedInspieler().get(z), true);
+               } else {
+                   ifpunkteplus.put(Start.getSession().getLoggedInspieler().get(z), false);
                }
                 //TODO punkete vergabe fixen
 
@@ -632,20 +638,21 @@ public class MainPanel extends JPanel {
             t.setEditable(false);
 
             JTextArea punkte = new JTextArea();
-            punkte.setText("+1");
+            if(ifpunkteplus.get(s)) {
+                punkte.setText("+1");
+            }else punkte.setText("+0");
             punkte.setBounds(1220, Start.getSession().getLoggedInspieler().indexOf(s) * 110,70,70);
             punkte.setFont(new Font("Verdana",1,35));
             punkte.setBackground(Color.darkGray);
-            punkte.setForeground(Color.black);
+            punkte.setForeground(Color.WHITE);
             punkte.setOpaque(false);
             punkte.setVisible(true);
             punkte.setEditable(false);
 
-
-
             add(t);
             add(punkte);
             updateUI();
+
         });
         ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
         ses.schedule(()-> {
@@ -668,7 +675,7 @@ public class MainPanel extends JPanel {
             spielerJTextAreaHashMapVote.clear();
             spielerJTextAreaHashMap.clear();
             jButtonJTextAreaHashMap.clear();
-            //TODO bo vieleicht geaths jo
+            //TODO bo vieleicht geaths jo // btw es geath :D
             renderRunde();
         }
     }
@@ -704,10 +711,7 @@ public class MainPanel extends JPanel {
     BufferedImage bg;
     @Override
     protected void paintComponent(Graphics g) {
-
-
-
-        if(ls.getState() <100) {
+        if(ls.getState() <= 100) {
             g.drawImage(hg, 0, 0, 1920, 1080, null);
             g.drawImage(ls.getHg(), 660, 860, 600, 80, null);
             g.setColor(Color.green);
@@ -715,36 +719,9 @@ public class MainPanel extends JPanel {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Verdana",1,25));
             g.drawString(ls.getState() + "%", 950,980);
-
-        }else  if(ls.getState()==100) {
-            g.drawImage(hg, 0, 0, 1920, 1080, null);
-            try {
-                g.drawImage(ImageIO.read(new File("src/main/java/lbarfull.png")), 660, 860, 600, 80, null);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            g.setColor(Color.green);
-            g.fillRect(713,885,ls.getState()*5,30);
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Verdana",1,25));
-            g.drawString(ls.getState() + "%", 950,980);
-        }else{
+        }else {
             g.drawImage(bg, 0, 0, 1920, 1080, null);
         }
-
-        if(ls.getState()%10 ==1 || ls.getState()%10 ==2){
-            g.drawString("Loading", 900, 800);
-        }
-        if(ls.getState()%10 ==3 ||ls.getState()%10 ==4 || ls.getState()%10 ==5  ){
-            g.drawString("Loading.", 900, 800);
-        }
-        if(ls.getState()%10 ==6 ||ls.getState()%10 ==7 || ls.getState()%10 ==8  ){
-            g.drawString("Loading..", 900, 800);
-        }
-        if(ls.getState()%10 ==9 ||ls.getState()%10 ==0  ){
-            g.drawString("Loading...", 900, 800);
-        }
-
     }
 }
 
