@@ -649,6 +649,8 @@ public class MainPanel extends JPanel {
             punkte.setVisible(true);
             punkte.setEditable(false);
 
+
+
             add(t);
             add(punkte);
             updateUI();
@@ -711,7 +713,10 @@ public class MainPanel extends JPanel {
     BufferedImage bg;
     @Override
     protected void paintComponent(Graphics g) {
-        if(ls.getState() <= 100) {
+
+
+
+        if(ls.getState() <100) {
             g.drawImage(hg, 0, 0, 1920, 1080, null);
             g.drawImage(ls.getHg(), 660, 860, 600, 80, null);
             g.setColor(Color.green);
@@ -719,9 +724,36 @@ public class MainPanel extends JPanel {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Verdana",1,25));
             g.drawString(ls.getState() + "%", 950,980);
-        }else {
+
+        }else  if(ls.getState()==100) {
+            g.drawImage(hg, 0, 0, 1920, 1080, null);
+            try {
+                g.drawImage(ImageIO.read(new File("src/main/java/lbarfull.png")), 660, 860, 600, 80, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            g.setColor(Color.WHITE);
+            g.fillRect(713,885,ls.getState()*5,30);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Verdana",1,25));
+            g.drawString(ls.getState() + "%", 950,980);
+        }else{
             g.drawImage(bg, 0, 0, 1920, 1080, null);
         }
+
+        if(ls.getState()%10 ==1 || ls.getState()%10 ==2){
+            g.drawString("Loading", 900, 800);
+        }
+        if(ls.getState()%10 ==3 ||ls.getState()%10 ==4 || ls.getState()%10 ==5  ){
+            g.drawString("Loading.", 900, 800);
+        }
+        if(ls.getState()%10 ==6 ||ls.getState()%10 ==7 || ls.getState()%10 ==8  ){
+            g.drawString("Loading..", 900, 800);
+        }
+        if(ls.getState()%10 ==9 ||ls.getState()%10 ==0  ){
+            g.drawString("Loading...", 900, 800);
+        }
+
     }
 }
 
