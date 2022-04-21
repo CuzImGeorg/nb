@@ -29,7 +29,7 @@ public class LoadinScreen {
 
                 state++;
                 try {
-                    ses.awaitTermination(10,TimeUnit.MILLISECONDS);
+                    ses.awaitTermination(20,TimeUnit.MILLISECONDS);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
