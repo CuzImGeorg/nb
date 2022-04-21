@@ -167,13 +167,16 @@ public class MainPanel extends JPanel {
         btn2.addActionListener(e -> {
 
 
-            username.setText("username");
-            password.setText("password");
+
             try {
-                Spieler.SaveUser(username.getText(), password.getText());
+                if(!Spieler.checkIfPlayereXites(username.getText(), password.getText())){
+                    Spieler.SaveUser(username.getText(), password.getText());
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+            username.setText("username");
+            password.setText("password");
             currentUser();
             updateUI();
             StartBtnUeberpruefung();
@@ -977,7 +980,7 @@ public class MainPanel extends JPanel {
 
                         spielerPunkteHashMap.entrySet().stream().sorted((k1, k2) -> k2.getValue().compareTo(k1.getValue()));
                     ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-                    ses.scheduleAtFixedRate(()-> {
+                    ses.schedule(()-> {
                         spielerPunkteHashMap.forEach((Spieler s,Integer p)->{
                             JTextArea t = new JTextArea();
                             t.setText(s.getUsername());
@@ -1010,12 +1013,44 @@ public class MainPanel extends JPanel {
                             e.printStackTrace();
                         }
                         } );
-                    },0,50, TimeUnit.MILLISECONDS );
+                        playAgian();
+                    },50, TimeUnit.MILLISECONDS );
 
 
     }
-    BufferedImage hg;
-    BufferedImage bg;
+
+    private void playAgian() {
+        JButton playAgian = new JButton("PLAY AGIAN");
+        playAgian.setBorder(new LineBorder(Color.black, 10));
+        playAgian.setBounds(550, i * 100 +30,400,80);
+        playAgian.setFont(new Font("Verdana",1,35));
+        playAgian.setVisible(true);
+        playAgian.setBackground(new Color(0xAC61C9));
+        playAgian.setForeground(new Color(0x351257));
+        add(playAgian);
+        playAgian.addActionListener((l)-> {
+
+        });
+        JButton BackToMainMenu = new JButton("BACK TO MAIN MENU");
+        BackToMainMenu.setBorder(new LineBorder(Color.black, 10));
+        BackToMainMenu.setBounds(550, i * 100 +30,400,80);
+        BackToMainMenu.setFont(new Font("Verdana",1,35));
+        BackToMainMenu.setVisible(true);
+        BackToMainMenu.setBackground(new Color(0xAC61C9));
+        BackToMainMenu.setForeground(new Color(0x351257));
+        add(BackToMainMenu);
+        playAgian.addActionListener((l)-> {
+
+        });
+
+
+
+    }
+
+
+
+    private final BufferedImage hg;
+    private final BufferedImage bg;
     @Override
     protected void paintComponent(Graphics g) {
 
