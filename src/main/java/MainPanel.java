@@ -224,7 +224,7 @@ public class MainPanel extends JPanel {
                 setLayout(null);
             }
             updateUI();
-        });
+        }
 
 
 
@@ -972,16 +972,17 @@ public class MainPanel extends JPanel {
             renderRunde();
         }
     }
-
+    int i = 0;
     private void afterGame() {
 
+                        spielerPunkteHashMap.entrySet().stream().sorted((k1, k2) -> k2.getValue().compareTo(k1.getValue()));
                     ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
                     ses.scheduleAtFixedRate(()-> {
                         spielerPunkteHashMap.forEach((Spieler s,Integer p)->{
                             JTextArea t = new JTextArea();
                             t.setText(s.getUsername());
                             t.setBorder(new LineBorder(Color.black, 10));
-                            t.setBounds(550, Start.getSession().getLoggedInspieler().indexOf(s) * 100 +30,400,80);
+                            t.setBounds(550, i * 100 +30,400,80);
                             t.setFont(new Font("Verdana",1,35));
                             t.setVisible(true);
                             t.setEditable(false);
@@ -989,7 +990,7 @@ public class MainPanel extends JPanel {
                             t.setForeground(new Color(0x351257));
                             JTextArea punkte = new JTextArea();
                             punkte.setText(String.valueOf(p));
-                            punkte.setBounds(1000, Start.getSession().getLoggedInspieler().indexOf(s) * 100+30,80,80);
+                            punkte.setBounds(1000, i * 100+30,80,80);
                             punkte.setBorder(new LineBorder(Color.black, 10));
                             punkte.setFont(new Font("Verdana",1,35));
                             punkte.setBackground(new Color(0xAC61C9));
@@ -997,7 +998,7 @@ public class MainPanel extends JPanel {
                             punkte.setForeground(Color.black);
                             punkte.setVisible(true);
                             punkte.setEditable(false);
-
+                            i++;
 
 
                             add(t);
