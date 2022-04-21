@@ -1,6 +1,10 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -13,20 +17,49 @@ public class MainPanel extends JPanel {
     private ArrayList<Spieler>  spieler= new ArrayList<>();
     private int spielid, rundeid;
     private final Abfrafgen abfrafgen = new Abfrafgen();
+    private  LoadinScreen ls;
 
     MainPanel(){
+        ls = new LoadinScreen();
+        ls.start();
+
+        try {
+            hg = ImageIO.read(new File("src/main/java/background.png"));
+            bg = ImageIO.read(new File("src/main/java/bg.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         menubar= new JMenuBar();
         setSize(1920,1080);
         setBackground(Color.darkGray);
-        add(menubar);
-        menuSession();
 
-        admin();
-        currentUser();
-        menuGobal();
+        add(menubar);
+        load();
+
+    }
+
+    public void load() {
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+        ses.scheduleAtFixedRate(()-> {
+            if(ls.getState()<100) {
+                updateUI();
+            }else {
+                updateUI();
+
+                menuSession();
+                admin();
+                currentUser();
+                menuGobal();
+                updateUI();
+                ses.shutdown();
+            }
+        },0,10,TimeUnit.MILLISECONDS);
     }
     private ArrayList<JButton> barr = new ArrayList<>();
     public void menuSession() {
+
         JMenu menu= new JMenu("session");
         JMenuItem item= new JMenuItem("Add Player to session");
         item.addActionListener(l -> {
@@ -281,13 +314,20 @@ public class MainPanel extends JPanel {
 
 
                 JButton siuuuu= new JButton();
-                btn.setBorder(new LineBorder(Color.BLACK,2));
-                btn.setBackground(Color.GREEN);
-                btn.setBounds(120, 180,150,30);
-                btn.setVisible(true);
-                btn.setText("Frage Hinzufügen");
-                panel.add(btn);
-                panel.updateUI(); //TODO FIX
+                siuuuu.setBorder(new LineBorder(Color.BLACK,2));
+                siuuuu.setBackground(Color.GREEN);
+                siuuuu.setBounds(120, 180,150,30);
+                siuuuu.setVisible(true);
+                siuuuu.setText("Frage Hinzufügen");
+                siuuuu.addActionListener((l2)-> {
+                    try {
+                        Frage.SaveFrage(neueFrage.getText(), FrageZuAntwort.getText());
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                });
+                panel.add(siuuuu);
+                panel.updateUI();
 
             });
 //
@@ -295,6 +335,10 @@ public class MainPanel extends JPanel {
         });
         fragen.add(admPanel);
         menubar.add(fragen);
+    }
+
+    private void frageneue() {
+
     }
 
     private ArrayList<JTextArea> tarr = new ArrayList<>();
@@ -400,6 +444,7 @@ public class MainPanel extends JPanel {
         frage.setBackground(Color.darkGray);
         frage.setForeground(Color.white);
         frage.setFont(new Font("Verdana",1,25));
+        frage.setOpaque(false);
         frage.setBounds(760,500,400,300);
         frage.setEditable(false);
 
@@ -548,7 +593,7 @@ public class MainPanel extends JPanel {
                // votes.put(Start.getSession().getLoggedInspieler().get(z), FrageAntwort.getIDFrageAntwort(f.getId(), new Antwort().SetFullRecordAntwort(f.getFrage(), spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText()).getId(), spielid, rundeid ) );
                votes.put(Start.getSession().getLoggedInspieler().get(z), t);
                if(t.equals(taRA)) {
-                   int punkte = spielerPunkteHashMap.get(Start.getSession().getLoggedInspieler().get(z)) + 2;
+                   int punkte = spielerPunkteHashMap.get(Start.getSession().getLoggedInspieler().get(z)) +1;
                    spielerPunkteHashMap.remove(Start.getSession().getLoggedInspieler().get(z));
                    spielerPunkteHashMap.put(Start.getSession().getLoggedInspieler().get(z),punkte);
                }
@@ -592,6 +637,7 @@ public class MainPanel extends JPanel {
             punkte.setFont(new Font("Verdana",1,35));
             punkte.setBackground(Color.darkGray);
             punkte.setForeground(Color.black);
+            punkte.setOpaque(false);
             punkte.setVisible(true);
             punkte.setEditable(false);
 
@@ -612,14 +658,66 @@ public class MainPanel extends JPanel {
         removeAll();
         revalidate();
         repaint();
-        rundeid++;
-        spielerJTextAreaHashMapanswer.clear();
-        spielerJButtonHashMap.clear();
-        spielerJTextAreaHashMapVote.clear();
-        spielerJTextAreaHashMap.clear();
-        jButtonJTextAreaHashMap.clear();
-        //TODO bo vieleicht geaths jo
-        renderRunde();
+        if(rundeid == 3){
+            afterGame();
+        }
+        else {
+            rundeid++;
+            spielerJTextAreaHashMapanswer.clear();
+            spielerJButtonHashMap.clear();
+            spielerJTextAreaHashMapVote.clear();
+            spielerJTextAreaHashMap.clear();
+            jButtonJTextAreaHashMap.clear();
+            //TODO bo vieleicht geaths jo
+            renderRunde();
+        }
+    }
+
+    private void afterGame() {
+        spielerPunkteHashMap.forEach((Spieler s,Integer p)->{
+            JTextArea t = new JTextArea();
+            t.setText(s.getUsername());
+            t.setBorder(new LineBorder(Color.black, 10));
+            t.setBounds(790, Start.getSession().getLoggedInspieler().indexOf(s) * 90,400,80);
+            t.setFont(new Font("Verdana",1,35));
+            t.setVisible(true);
+            t.setEditable(false);
+
+            JTextArea punkte = new JTextArea();
+            punkte.setText(String.valueOf(p));
+            punkte.setBounds(1220, Start.getSession().getLoggedInspieler().indexOf(s) * 110,70,70);
+            punkte.setBorder(new LineBorder(Color.black, 10));
+            punkte.setFont(new Font("Verdana",1,35));
+            punkte.setBackground(Color.darkGray);
+            punkte.setForeground(Color.black);
+            punkte.setVisible(true);
+            punkte.setEditable(false);
+
+
+
+            add(t);
+            add(punkte);
+            updateUI();
+        } );
+    }
+    BufferedImage hg;
+    BufferedImage bg;
+    @Override
+    protected void paintComponent(Graphics g) {
+
+
+
+        if(ls.getState() < 100) {
+            g.drawImage(hg, 0, 0, 1920, 1080, null);
+            g.drawImage(ls.getHg(), 660, 860, 600, 80, null);
+            g.setColor(Color.green);
+            g.fillRect(713,885,ls.getState()*5,30);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Verdana",1,25));
+            g.drawString(ls.getState() + "%", 950,980);
+        }else {
+            g.drawImage(bg, 0, 0, 1920, 1080, null);
+        }
     }
 }
 
