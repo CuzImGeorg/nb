@@ -445,12 +445,21 @@ public class MainPanel extends JPanel {
     }
 
     private ArrayList<JTextArea> tarr = new ArrayList<>();
+    private ArrayList<JButton> JBarr = new ArrayList<>();
     public void currentUser() {
+        for (JTextArea ta: tarr) {
+            remove(ta);
+            updateUI();
+        }
+        for (JButton btn: JBarr) {
+            remove(btn);
+            updateUI();
+        }
         tarr.clear();
+        JBarr.clear();
         Start.getSession().getLoggedInspieler().forEach(Spieler::toStringd);
         if(!Start.getSession().getLoggedInspieler().isEmpty()) {
             for (Spieler s : Start.getSession().getLoggedInspieler()) {
-
 
                 JTextArea t = new JTextArea();
                 t.setText(s.getUsername());
@@ -467,6 +476,7 @@ public class MainPanel extends JPanel {
                 removeBTN.setBackground(Color.green);
                 removeBTN.setFont(new Font("Verdana",1,20));
                 removeBTN.setVisible(true);
+                JBarr.add(removeBTN);
                 removeBTN.addActionListener((l)-> {
                     Start.getSession().getLoggedInspieler().remove(s);
                     remove(t);
