@@ -407,30 +407,183 @@ public class MainPanel extends JPanel {
     private void renderPlayers() {
         //TODO wenn zeit mochen dass dynamisch spieerahnzal isch :D
         if(!Start.getSession().getLoggedInspieler().isEmpty()) {
-            for (Spieler s : Start.getSession().getLoggedInspieler()) {
+            switch (Start.getSession().getLoggedInspieler().size()) {
+                case 2 -> {
 
-                JTextArea t = new JTextArea();
-                t.setText(s.getUsername());
-                t.setFont(new Font("Verdana",1,20));
-                t.setBorder(new LineBorder(Color.black, 2));
-                switch (Start.getSession().getLoggedInspieler().indexOf(s)){
-                    case 0-> t.setBounds(550, 100,200,30);
-                    case 1 -> t.setBounds(1050, 100,200,30);
-                    case 2 -> t.setBounds(40, 300,200,30);
-                    case 3 -> t.setBounds(40, 700,200,30);
-                    case 4 -> t.setBounds(550, 900,200,30);
-                    case 5 -> t.setBounds(1050, 900,200,30);
-                    case 6 -> t.setBounds(1600, 300,200,30);
-                    case 7 -> t.setBounds(1600, 700,200,30);
+                    for (Spieler s : Start.getSession().getLoggedInspieler()) {
 
+                        JTextArea t = new JTextArea();
+                        t.setText(s.getUsername());
+                        t.setFont(new Font("Verdana", 1, 20));
+                        t.setBorder(new LineBorder(Color.black, 2));
+                        switch (Start.getSession().getLoggedInspieler().indexOf(s)) {
+
+                            case 0 -> t.setBounds(40, 450, 200, 30);
+                            case 1 -> t.setBounds(1600, 450, 200, 30);
+                        }
+
+                        t.setVisible(true);
+                        t.setEditable(false);
+                        spielerJTextAreaHashMap.put(s, t);
+                        add(t);
+                        updateUI();
+                    }
                 }
+                case 3 -> {
+                    for (Spieler s : Start.getSession().getLoggedInspieler()) {
 
-                t.setVisible(true);
-                t.setEditable(false);
-                spielerJTextAreaHashMap.put(s, t);
-                add(t);
-                updateUI();
+                        JTextArea t = new JTextArea();
+                        t.setText(s.getUsername());
+                        t.setFont(new Font("Verdana", 1, 20));
+                        t.setBorder(new LineBorder(Color.black, 2));
+                        switch (Start.getSession().getLoggedInspieler().indexOf(s)) {
+
+                            case 0 -> t.setBounds(40, 800, 200, 30);
+                            case 1 -> t.setBounds(1600, 800, 200, 30);
+                            case 2 -> t.setBounds(860, 100, 200, 30);
+
+
+                        }
+
+                        t.setVisible(true);
+                        t.setEditable(false);
+                        spielerJTextAreaHashMap.put(s, t);
+                        add(t);
+                        updateUI();
+                    }
+                }
+                case 4->{
+                    for (Spieler s : Start.getSession().getLoggedInspieler()) {
+
+                        JTextArea t = new JTextArea();
+                        t.setText(s.getUsername());
+                        t.setFont(new Font("Verdana",1,20));
+                        t.setBorder(new LineBorder(Color.black, 2));
+                        switch (Start.getSession().getLoggedInspieler().indexOf(s)){
+
+                            case 0 -> t.setBounds(40, 450, 200, 30);
+                            case 1 -> t.setBounds(1600, 450, 200, 30);
+                            case 2 -> t.setBounds(860, 100, 200, 30);
+                            case 3 -> t.setBounds(860, 800,200,30);
+
+
+                        }
+
+                        t.setVisible(true);
+                        t.setEditable(false);
+                        spielerJTextAreaHashMap.put(s, t);
+                        add(t);
+                        updateUI();
+                    }
+                }
+                case 5->{
+                    for (Spieler s : Start.getSession().getLoggedInspieler()) {
+
+                        JTextArea t = new JTextArea();
+                        t.setText(s.getUsername());
+                        t.setFont(new Font("Verdana",1,20));
+                        t.setBorder(new LineBorder(Color.black, 2));
+                        switch (Start.getSession().getLoggedInspieler().indexOf(s)){
+
+                            case 0 -> t.setBounds(860, 100, 200, 30);
+                            case 1 -> t.setBounds(40, 450, 200, 30);
+                            case 2 -> t.setBounds(1600, 450, 200, 30);
+                            case 3 -> t.setBounds(550, 800,200,30);
+                            case 4 -> t.setBounds(1050, 800,200,30);
+
+
+
+                        }
+
+                        t.setVisible(true);
+                        t.setEditable(false);
+                        spielerJTextAreaHashMap.put(s, t);
+                        add(t);
+                        updateUI();
+                    }
+                }case 6->{
+                    for (Spieler s : Start.getSession().getLoggedInspieler()) {
+
+                        JTextArea t = new JTextArea();
+                        t.setText(s.getUsername());
+                        t.setFont(new Font("Verdana",1,20));
+                        t.setBorder(new LineBorder(Color.black, 2));
+                        switch (Start.getSession().getLoggedInspieler().indexOf(s)){
+
+                            case 0-> t.setBounds(550, 100,200,30);
+                            case 1 -> t.setBounds(1050, 100,200,30);
+                            case 2 -> t.setBounds(40, 450, 200, 30);
+                            case 3 -> t.setBounds(1600, 450, 200, 30);
+                            case 4 -> t.setBounds(550, 800,200,30);
+                            case 5 -> t.setBounds(1050, 800,200,30);
+
+
+                        }
+
+                        t.setVisible(true);
+                        t.setEditable(false);
+                        spielerJTextAreaHashMap.put(s, t);
+                        add(t);
+                        updateUI();
+                    }
+                }
+                case 7->{
+                    for (Spieler s : Start.getSession().getLoggedInspieler()) {
+
+                        JTextArea t = new JTextArea();
+                        t.setText(s.getUsername());
+                        t.setFont(new Font("Verdana",1,20));
+                        t.setBorder(new LineBorder(Color.black, 2));
+                        switch (Start.getSession().getLoggedInspieler().indexOf(s)){
+
+                            case 0 -> t.setBounds(860, 100, 200, 30);
+                            case 1 -> t.setBounds(40, 300,200,30);
+                            case 2 -> t.setBounds(1600, 300,200,30);
+                            case 3 -> t.setBounds(40, 650,200,30);
+                            case 4 -> t.setBounds(1600, 650,200,30);
+                            case 5 -> t.setBounds(550, 800,200,30);
+                            case 6 -> t.setBounds(1050, 800,200,30);
+
+
+                        }
+
+                        t.setVisible(true);
+                        t.setEditable(false);
+                        spielerJTextAreaHashMap.put(s, t);
+                        add(t);
+                        updateUI();
+                    }
+                }
+                case 8->{
+                    for (Spieler s : Start.getSession().getLoggedInspieler()) {
+
+                        JTextArea t = new JTextArea();
+                        t.setText(s.getUsername());
+                        t.setFont(new Font("Verdana",1,20));
+                        t.setBorder(new LineBorder(Color.black, 2));
+                        switch (Start.getSession().getLoggedInspieler().indexOf(s)){
+
+                            case 0-> t.setBounds(40, 300,200,30);
+                            case 1 -> t.setBounds(550, 100,200,30);
+                            case 2 -> t.setBounds(1050, 100,200,30);
+                            case 3 -> t.setBounds(40, 700,200,30);
+                            case 4 -> t.setBounds(550, 800,200,30);
+                            case 5 -> t.setBounds(1050, 800,200,30);
+                            case 6 -> t.setBounds(1600, 300,200,30);
+                            case 7 -> t.setBounds(1600, 700,200,30);
+
+                        }
+
+                        t.setVisible(true);
+                        t.setEditable(false);
+                        spielerJTextAreaHashMap.put(s, t);
+                        add(t);
+                        updateUI();
+                    }
+                }
             }
+
+
         }
     }
 
@@ -710,7 +863,7 @@ public class MainPanel extends JPanel {
         if(ls.getState() <100) {
             g.drawImage(hg, 0, 0, 1920, 1080, null);
             g.drawImage(ls.getHg(), 660, 860, 600, 80, null);
-            g.setColor(new Color(161,94,255));
+            g.setColor(new Color(161,94,255, 255));
             g.fillRect(713,885,ls.getState()*5,30);
             g.setColor(Color.WHITE);
             g.setFont(new Font("Verdana",1,25));
@@ -723,7 +876,7 @@ public class MainPanel extends JPanel {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            g.setColor(new Color(161,94,255));
+            g.setColor(new Color(161,94,255, 255));
             g.fillRect(713,885,ls.getState()*5,30);
             g.setColor(Color.WHITE);
             g.setFont(new Font("Verdana",1,25));
