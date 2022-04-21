@@ -120,7 +120,35 @@ public class MainPanel extends JPanel {
         setLayout(null);
         password.setEditable(true);
         updateUI();
+        JButton btn2 = new JButton();
 
+        btn2.setBorder(new LineBorder(Color.BLACK, 2));
+        btn2.setBackground(new Color(84,4,98,255));
+        btn2.setBounds(860, 200, 200, 30);
+        btn2.setVisible(true);
+        btn2.setForeground(Color.WHITE);
+        btn2.setText("Register");
+        add(btn2);
+        setSize(100, 25);
+        setLayout(null);
+        updateUI();
+        btn2.addActionListener(e -> {
+
+
+
+            try {
+                if(!Spieler.checkIfPlayereXites(username.getText(), password.getText())){
+                    Spieler.SaveUser(username.getText(), password.getText());
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            username.setText("username");
+            password.setText("password");
+            currentUser();
+            updateUI();
+            StartBtnUeberpruefung();
+        });
         JButton btn = new JButton();
 
         btn.setBorder(new LineBorder(Color.BLACK, 2));
@@ -147,24 +175,14 @@ public class MainPanel extends JPanel {
                 password.setEnabled(false);
                 btn.setEnabled(false);
                 btn.setVisible(false);
+                btn2.setEnabled(false);
+                btn2.setVisible(false);
 
             }
-            currentUserWithRemove();
+            currentUser();
             updateUI();
             StartBtnUeberpruefung();
-        });JButton btn2 = new JButton();
-
-        btn2.setBorder(new LineBorder(Color.BLACK, 2));
-        btn2.setBackground(new Color(84,4,98,255));
-        btn2.setBounds(860, 200, 200, 30);
-        btn2.setVisible(true);
-        btn2.setForeground(Color.WHITE);
-        btn2.setText("Register");
-        add(btn2);
-        setSize(100, 25);
-        setLayout(null);
-        updateUI();
-        btn2.addActionListener(e -> {
+        });
 
 
 
@@ -556,6 +574,7 @@ public class MainPanel extends JPanel {
             randomquestion();
             writeanswer();
 
+
         },5,TimeUnit.SECONDS);
     }
 
@@ -772,8 +791,10 @@ public class MainPanel extends JPanel {
                 JButton b = new JButton("ok");
                 b.setBounds(t.getX() + 215, t.getY()+40, 40,75);
                 b.setBackground(Color.green);
+
                 add(b);
                 add(ta);
+                System.out.println("10000");
                 spielerJTextAreaHashMapanswer.put(s,ta);
                 spielerJButtonHashMap.put(s,b);
                 updateUI();
