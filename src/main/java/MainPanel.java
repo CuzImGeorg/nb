@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
     public void load() {
         ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
         ses.scheduleAtFixedRate(()-> {
-            if(ls.getState()<100) {
+            if(ls.getState()<=100) {
                 updateUI();
             }else {
                 updateUI();
@@ -707,7 +707,7 @@ public class MainPanel extends JPanel {
 
 
 
-        if(ls.getState() < 100) {
+        if(ls.getState() <= 100) {
             g.drawImage(hg, 0, 0, 1920, 1080, null);
             g.drawImage(ls.getHg(), 660, 860, 600, 80, null);
             g.setColor(Color.green);

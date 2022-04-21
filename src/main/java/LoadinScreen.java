@@ -25,8 +25,29 @@ public class LoadinScreen {
         int rdm = r.nextInt(5)+5;
         ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
         ses.scheduleAtFixedRate(()-> {
-            if(state < 100) {
+            if(state <= 101) {
+
                 state++;
+                try {
+                    ses.awaitTermination(10,TimeUnit.MILLISECONDS);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(state == 43 || state == 99){
+                    try {
+                        ses.awaitTermination(2000,TimeUnit.MILLISECONDS);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                if(state== 44 || state== 100){
+                    try {
+                        ses.awaitTermination(1000,TimeUnit.MILLISECONDS);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 System.out.println(state);
             }
         },0,50, TimeUnit.MILLISECONDS );
