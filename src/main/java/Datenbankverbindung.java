@@ -10,7 +10,7 @@ public class Datenbankverbindung {
 
     private final String jdbcURL = "jdbc:postgresql://localhost:5432/nobody";
     private final String username = "postgres";
-    private final String psw = "Admin";
+    private final String psw = "admin";
 
     private boolean debugMode = Start.isDebugMode();
     

@@ -15,13 +15,13 @@ import java.util.concurrent.TimeUnit;
 
 public class MainPanel extends JPanel {
     private final JMenuBar menubar;
-    private Datenbankverbindung db= new Datenbankverbindung();
-    private ArrayList<Spieler>  spieler= new ArrayList<>();
+    private Datenbankverbindung db = new Datenbankverbindung();
+    private ArrayList<Spieler> spieler = new ArrayList<>();
     private int spielid, rundeid, maxrunde;
     private final Abfrafgen abfrafgen = new Abfrafgen();
-    private  LoadinScreen ls;
+    private LoadinScreen ls;
 
-    MainPanel(){
+    MainPanel() {
         ls = new LoadinScreen();
         ls.start();
 
@@ -33,8 +33,8 @@ public class MainPanel extends JPanel {
         }
 
 
-        menubar= new JMenuBar();
-        setSize(1920,1080);
+        menubar = new JMenuBar();
+        setSize(1920, 1080);
         setBackground(Color.darkGray);
 
         add(menubar);
@@ -44,10 +44,10 @@ public class MainPanel extends JPanel {
 
     public void load() {
         ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-        ses.scheduleAtFixedRate(()-> {
-            if(ls.getState()<=100) {
+        ses.scheduleAtFixedRate(() -> {
+            if (ls.getState() <= 100) {
                 updateUI();
-            }else {
+            } else {
                 updateUI();
 
                 menuSession();
@@ -57,14 +57,16 @@ public class MainPanel extends JPanel {
                 updateUI();
                 ses.shutdown();
             }
-        },0,10,TimeUnit.MILLISECONDS);
+        }, 0, 10, TimeUnit.MILLISECONDS);
     }
+
     private ArrayList<JButton> barr = new ArrayList<>();
+
     public void menuSession() {
 
         JButton adminPanel = new JButton();
         adminPanel.setBorder(new LineBorder(Color.BLACK, 2));
-        adminPanel.setBackground(new Color(84,4,98,255));
+        adminPanel.setBackground(new Color(84, 4, 98, 255));
         adminPanel.setBounds(1500, 80, 200, 30);
         adminPanel.setVisible(true);
         adminPanel.setForeground(Color.WHITE);
@@ -123,7 +125,7 @@ public class MainPanel extends JPanel {
         JButton btn2 = new JButton();
 
         btn2.setBorder(new LineBorder(Color.BLACK, 2));
-        btn2.setBackground(new Color(84,4,98,255));
+        btn2.setBackground(new Color(84, 4, 98, 255));
         btn2.setBounds(860, 200, 200, 30);
         btn2.setVisible(true);
         btn2.setForeground(Color.WHITE);
@@ -135,9 +137,8 @@ public class MainPanel extends JPanel {
         btn2.addActionListener(e -> {
 
 
-
             try {
-                if(!Spieler.checkIfPlayereXites(username.getText(), password.getText())){
+                if (!Spieler.checkIfPlayereXites(username.getText(), password.getText())) {
                     Spieler.SaveUser(username.getText(), password.getText());
                 }
             } catch (SQLException ex) {
@@ -152,7 +153,7 @@ public class MainPanel extends JPanel {
         JButton btn = new JButton();
 
         btn.setBorder(new LineBorder(Color.BLACK, 2));
-        btn.setBackground(new Color(84,4,98,255));
+        btn.setBackground(new Color(84, 4, 98, 255));
         btn.setBounds(860, 160, 200, 30);
         btn.setVisible(true);
         btn.setForeground(Color.WHITE);
@@ -168,7 +169,7 @@ public class MainPanel extends JPanel {
 
             username.setText("username");
             password.setText("password");
-            if(Start.getSession().getLoggedInspieler().size() == 8){
+            if (Start.getSession().getLoggedInspieler().size() == 8) {
                 username.setVisible(false);
                 username.setEnabled(false);
                 password.setVisible(false);
@@ -185,28 +186,26 @@ public class MainPanel extends JPanel {
         });
 
 
-
-            try {
-                if(!Spieler.checkIfPlayereXites(username.getText(), password.getText())){
-                    Spieler.SaveUser(username.getText(), password.getText());
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+        try {
+            if (!Spieler.checkIfPlayereXites(username.getText(), password.getText())) {
+                Spieler.SaveUser(username.getText(), password.getText());
             }
-            username.setText("username");
-            password.setText("password");
-            currentUserWithRemove();
-            updateUI();
-            StartBtnUeberpruefung();
-        });
-
-
-        for (JButton b : barr) {
-            remove(b);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
+        username.setText("username");
+        password.setText("password");
+        currentUserWithRemove();
+        updateUI();
+        StartBtnUeberpruefung();
+
+
+        for(JButton b :barr) {
+        remove(b);
+     }
         barr.clear();
 
-    }
+}
 
 
 
@@ -501,7 +500,7 @@ public class MainPanel extends JPanel {
         }
         tarr.clear();
         JBarr.clear();
-
+        Start.getSession().getLoggedInspieler().forEach(Spieler::toStringd);
         if(!Start.getSession().getLoggedInspieler().isEmpty()) {
             for (Spieler s : Start.getSession().getLoggedInspieler()) {
 
@@ -573,7 +572,6 @@ public class MainPanel extends JPanel {
             renderPlayers();
             randomquestion();
             writeanswer();
-
 
         },5,TimeUnit.SECONDS);
     }
@@ -764,7 +762,7 @@ public class MainPanel extends JPanel {
     public void randomquestion() {
         JTextArea frage = new JTextArea();
         Random rdm = new Random();
-        f = new Frage().setFullRecord(rdm.nextInt(abfrafgen.getAnzahlFrage())+1);
+        f = new Frage().setFullRecord(rdm.nextInt(abfrafgen.getAnzahlFrage()-1));
         frage.setText(f.getFrage());
         frage.setLineWrap(true);
         frage.setBackground(Color.darkGray);
@@ -791,10 +789,8 @@ public class MainPanel extends JPanel {
                 JButton b = new JButton("ok");
                 b.setBounds(t.getX() + 215, t.getY()+40, 40,75);
                 b.setBackground(Color.green);
-
                 add(b);
                 add(ta);
-                System.out.println("10000");
                 spielerJTextAreaHashMapanswer.put(s,ta);
                 spielerJButtonHashMap.put(s,b);
                 updateUI();
@@ -1010,44 +1006,44 @@ public class MainPanel extends JPanel {
     }
     int i;
     private void afterGame() {
-             i = 0;
-            spielerPunkteHashMap.entrySet().stream().sorted((k1, k2) -> k2.getValue().compareTo(k1.getValue()));
-        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-        ses.schedule(()-> {
-            spielerPunkteHashMap.forEach((Spieler s,Integer p)->{
-                JTextArea t = new JTextArea();
-                t.setText(s.getUsername());
-                t.setBorder(new LineBorder(Color.black, 10));
-                t.setBounds(550, i * 80 +20,400,75);
-                t.setFont(new Font("Verdana",1,35));
-                t.setVisible(true);
-                t.setEditable(false);
-                t.setBackground(new Color(0xAC61C9));
-                t.setForeground(new Color(0x351257));
-                JTextArea punkte = new JTextArea();
-                punkte.setText(String.valueOf(p));
-                punkte.setBounds(1000, i * 80+20,80,75);
-                punkte.setBorder(new LineBorder(Color.black, 10));
-                punkte.setFont(new Font("Verdana",1,35));
-                punkte.setBackground(new Color(0xAC61C9));
-                punkte.setForeground(new Color(0x351257));
-                punkte.setForeground(Color.black);
-                punkte.setVisible(true);
-                punkte.setEditable(false);
-                i++;
+                         i = 0;
+                        spielerPunkteHashMap.entrySet().stream().sorted((k1, k2) -> k2.getValue().compareTo(k1.getValue()));
+                    ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+                    ses.schedule(()-> {
+                        spielerPunkteHashMap.forEach((Spieler s,Integer p)->{
+                            JTextArea t = new JTextArea();
+                            t.setText(s.getUsername());
+                            t.setBorder(new LineBorder(Color.black, 10));
+                            t.setBounds(550, i * 80 +20,400,75);
+                            t.setFont(new Font("Verdana",1,35));
+                            t.setVisible(true);
+                            t.setEditable(false);
+                            t.setBackground(new Color(0xAC61C9));
+                            t.setForeground(new Color(0x351257));
+                            JTextArea punkte = new JTextArea();
+                            punkte.setText(String.valueOf(p));
+                            punkte.setBounds(1000, i * 80+20,80,75);
+                            punkte.setBorder(new LineBorder(Color.black, 10));
+                            punkte.setFont(new Font("Verdana",1,35));
+                            punkte.setBackground(new Color(0xAC61C9));
+                            punkte.setForeground(new Color(0x351257));
+                            punkte.setForeground(Color.black);
+                            punkte.setVisible(true);
+                            punkte.setEditable(false);
+                            i++;
 
 
-                add(t);
-                add(punkte);
-                updateUI();
-            try {
-                ses.awaitTermination(1500,TimeUnit.MILLISECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            } );
-            playAgian();
-        },50, TimeUnit.MILLISECONDS );
+                            add(t);
+                            add(punkte);
+                            updateUI();
+                        try {
+                            ses.awaitTermination(1500,TimeUnit.MILLISECONDS);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        } );
+                        playAgian();
+                    },50, TimeUnit.MILLISECONDS );
 
 
     }
@@ -1061,32 +1057,13 @@ public class MainPanel extends JPanel {
         playAgian.setBackground(new Color(0xAC61C9));
         playAgian.setForeground(new Color(0x351257));
         add(playAgian);
-        updateUI();
         playAgian.addActionListener((l)-> {
             removeAll();
             revalidate();
             repaint();
             ls = new LoadinScreen();
             ls.start();
-            ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-            ses.scheduleAtFixedRate(()-> {
-                if(ls.getState()<=100) {
-                    updateUI();
-                }else {
-
-                    rundeid++;
-                    spielerJTextAreaHashMapanswer.clear();
-                    spielerJButtonHashMap.clear();
-                    spielerJTextAreaHashMapVote.clear();
-                    spielerJTextAreaHashMap.clear();
-                    jButtonJTextAreaHashMap.clear();
-                    ifpunkteplus.clear();
-                    gamestart();
-                    ses.shutdown();
-                }
-            },0,10,TimeUnit.MILLISECONDS);
-
-
+            load();
         });
         JButton BackToMainMenu = new JButton("BACK TO MAIN MENU");
         BackToMainMenu.setBorder(new LineBorder(Color.black, 10));
@@ -1097,28 +1074,7 @@ public class MainPanel extends JPanel {
         BackToMainMenu.setForeground(new Color(0x351257));
         add(BackToMainMenu);
         BackToMainMenu.addActionListener((l)-> {
-            removeAll();
-            revalidate();
-            repaint();
-            ls = new LoadinScreen();
-            ls.start();
-            ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-            ses.scheduleAtFixedRate(()-> {
-                if(ls.getState()<=100) {
-                    updateUI();
-                }else {
 
-                    rundeid++;
-                    spielerJTextAreaHashMapanswer.clear();
-                    spielerJButtonHashMap.clear();
-                    spielerJTextAreaHashMapVote.clear();
-                    spielerJTextAreaHashMap.clear();
-                    jButtonJTextAreaHashMap.clear();
-                    ifpunkteplus.clear();
-                    load(); //TODO bo vl geaths jo
-                    ses.shutdown();
-                }
-            },0,10,TimeUnit.MILLISECONDS);
         });
 
 
