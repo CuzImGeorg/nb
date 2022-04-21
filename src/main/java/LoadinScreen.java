@@ -48,7 +48,7 @@ public class LoadinScreen {
                         e.printStackTrace();
                     }
                 }
-                System.out.println(state);
+
             }
         },0,50, TimeUnit.MILLISECONDS );
     }

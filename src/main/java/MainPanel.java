@@ -2,6 +2,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -68,6 +70,18 @@ public class MainPanel extends JPanel {
             username.setBackground(Color.white);
             username.setBounds(722, 80,100,30);
             username.setText("Username");
+            username.addFocusListener(new FocusListener() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    username.setText("");
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if(username.getText().equals("")) username.setText("Username");
+                }
+
+            });
             add(username);
             setSize(100,25);
             setLayout(null);
@@ -77,6 +91,18 @@ public class MainPanel extends JPanel {
             password.setBackground(Color.white);
             password.setBounds(722, 120,100,30);
             password.setText("Password");
+            password.addFocusListener(new FocusListener() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    password.setText("");
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if(password.getText().equals("")) password.setText("Password");
+                }
+
+            });
             add(password);
             setSize(100,25);
             setLayout(null);
@@ -95,7 +121,10 @@ public class MainPanel extends JPanel {
             setLayout(null);
             updateUI();
             btn.addActionListener(e -> {
-                Start.getSession().addSpieler(username.getText(),password.getText());
+                if(Start.getSession().getLoggedInspieler().size() <8) {
+                    Start.getSession().addSpieler(username.getText(),password.getText());
+                }
+
                 remove(username);
                 remove(password);
                 remove(btn);
@@ -118,16 +147,16 @@ public class MainPanel extends JPanel {
                 JButton BtnRemove= new JButton();
                 BtnRemove.setBorder(new LineBorder(Color.BLACK,2));
                 BtnRemove.setBackground(Color.GREEN);
-                BtnRemove.setBounds(120, i*40,80,20);
+                BtnRemove.setBounds(520, i*60+20,80,40);
                 BtnRemove.setVisible(true);
                 BtnRemove.setText("Remove");
                 BtnRemove.addActionListener((a)-> {
                     for(JTextArea  ta: tarr) {
                         remove(ta);
                     }
-                    System.out.println(BtnRemove.getY()/40);
-                    Start.getSession().getLoggedInspieler().remove(BtnRemove.getY()/40);
-                    tarr.remove(BtnRemove.getY()/40);
+
+                    System.out.println((BtnRemove.getY()-20)/60);
+                    Start.getSession().getLoggedInspieler().remove(Start.getSession().getLoggedInspieler().get((BtnRemove.getY()-20)/60));
                     currentUser();
                     updateUI();
                     remove(BtnRemove);
@@ -257,6 +286,18 @@ public class MainPanel extends JPanel {
             username.setBackground(Color.white);
             username.setBounds(100, 80,100,30);
             username.setText("Username");
+            username.addFocusListener(new FocusListener() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    username.setText("");
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if(username.getText().equals(""))  username.setText("Username");
+                }
+
+            });
             panel.add(username);
 
             username.setEditable(true);
@@ -265,6 +306,18 @@ public class MainPanel extends JPanel {
             password.setBackground(Color.white);
             password.setBounds(100, 120,100,30);
             password.setText("Password");
+            password.addFocusListener(new FocusListener() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    password.setText("");
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if(password.getText().equals(""))  password.setText("Password");
+                }
+
+            });
             panel.add(password);
 
 
@@ -302,6 +355,18 @@ public class MainPanel extends JPanel {
                 neueFrage.setBackground(Color.white);
                 neueFrage.setBounds(50, 80,300,30);
                 neueFrage.setText("neue Frage eingeben");
+                neueFrage.addFocusListener(new FocusListener() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        neueFrage.setText("");
+                    }
+
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        if(neueFrage.getText().equals(""))  neueFrage.setText("neue Frage eingeben");
+                    }
+
+                });
                 panel.add(neueFrage);
 
 
@@ -310,6 +375,18 @@ public class MainPanel extends JPanel {
                 FrageZuAntwort.setBackground(Color.white);
                 FrageZuAntwort.setBounds(50, 130,300,30);
                 FrageZuAntwort.setText("Antwort zu Frage");
+                FrageZuAntwort.addFocusListener(new FocusListener() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        FrageZuAntwort.setText("");
+                    }
+
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        if(FrageZuAntwort.getText().equals("")) FrageZuAntwort.setText("Antwort zu Frage");
+                    }
+
+                });
                 panel.add(FrageZuAntwort);
 
 
@@ -354,8 +431,8 @@ public class MainPanel extends JPanel {
                 JTextArea t = new JTextArea();
                 t.setText(s.getUsername());
                 t.setBorder(new LineBorder(Color.black, 2));
-                t.setBounds(20, Start.getSession().getLoggedInspieler().indexOf(s) * 40,100,20);
-                t.setFont(new Font("Verdana",1,10));
+                t.setBounds(100, Start.getSession().getLoggedInspieler().indexOf(s) * 60+20,400,40);
+                t.setFont(new Font("Verdana",1,20));
                 t.setVisible(true);
                 t.setEditable(false);
                 tarr.add(t);
@@ -830,6 +907,7 @@ public class MainPanel extends JPanel {
             spielerJTextAreaHashMapVote.clear();
             spielerJTextAreaHashMap.clear();
             jButtonJTextAreaHashMap.clear();
+            ifpunkteplus.clear();
             //TODO bo vieleicht geaths jo // btw es geath :D
             renderRunde();
         }
@@ -868,17 +946,16 @@ public class MainPanel extends JPanel {
     protected void paintComponent(Graphics g) {
 
 
-
-        if(ls.getState() <100) {
+        if (ls.getState() < 100) {
             g.drawImage(hg, 0, 0, 1920, 1080, null);
             g.drawImage(ls.getHg(), 660, 860, 600, 80, null);
             g.setColor(new Color(161,94,255, 255));
             g.fillRect(713,885,ls.getState()*5,30);
             g.setColor(Color.WHITE);
-            g.setFont(new Font("Verdana",1,25));
-            g.drawString(ls.getState() + "%", 950,980);
+            g.setFont(new Font("Verdana", 1, 25));
+            g.drawString(ls.getState() + "%", 950, 980);
 
-        }else  if(ls.getState()==100) {
+        } else if (ls.getState() == 100) {
             g.drawImage(hg, 0, 0, 1920, 1080, null);
             try {
                 g.drawImage(ImageIO.read(new File("src/main/java/lbarfull.png")), 660, 860, 600, 80, null);
@@ -888,23 +965,26 @@ public class MainPanel extends JPanel {
             g.setColor(new Color(161,94,255, 255));
             g.fillRect(713,885,ls.getState()*5,30);
             g.setColor(Color.WHITE);
-            g.setFont(new Font("Verdana",1,25));
-            g.drawString(ls.getState() + "%", 950,980);
-        }else{
+            g.setFont(new Font("Verdana", 1, 25));
+            g.drawString(ls.getState() + "%", 950, 980);
+        } else {
             g.drawImage(bg, 0, 0, 1920, 1080, null);
         }
 
-        if(ls.getState()%10 ==1 || ls.getState()%10 ==2){
-            g.drawString("Loading", 900, 800);
-        }
-        if(ls.getState()%10 ==3 ||ls.getState()%10 ==4 || ls.getState()%10 ==5  ){
-            g.drawString("Loading.", 900, 800);
-        }
-        if(ls.getState()%10 ==6 ||ls.getState()%10 ==7 || ls.getState()%10 ==8  ){
-            g.drawString("Loading..", 900, 800);
-        }
-        if(ls.getState()%10 ==9 ||ls.getState()%10 ==0  ){
-            g.drawString("Loading...", 900, 800);
+        if (ls.getState() < 100) {
+
+            if (ls.getState() % 10 == 1 || ls.getState() % 10 == 2) {
+                g.drawString("Loading", 900, 800);
+            }
+            if (ls.getState() % 10 == 3 || ls.getState() % 10 == 4 || ls.getState() % 10 == 5) {
+                g.drawString("Loading.", 900, 800);
+            }
+            if (ls.getState() % 10 == 6 || ls.getState() % 10 == 7 || ls.getState() % 10 == 8) {
+                g.drawString("Loading..", 900, 800);
+            }
+            if (ls.getState() % 10 == 9 || ls.getState() % 10 == 0) {
+                g.drawString("Loading...", 900, 800);
+            }
         }
 
     }
