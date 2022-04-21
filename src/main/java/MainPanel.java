@@ -529,8 +529,9 @@ public class MainPanel extends JPanel {
             remove(runde);
             revalidate();
             repaint();
-            writeanswer();
+            renderPlayers();
             randomquestion();
+            writeanswer();
 
 
         },5,TimeUnit.SECONDS);
