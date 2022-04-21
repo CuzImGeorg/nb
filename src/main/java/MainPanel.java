@@ -146,7 +146,7 @@ public class MainPanel extends JPanel {
             }
             username.setText("username");
             password.setText("password");
-            currentUser();
+            currentUserWithRemove();
             updateUI();
             StartBtnUeberpruefung();
         });
@@ -180,7 +180,7 @@ public class MainPanel extends JPanel {
                 btn2.setVisible(false);
 
             }
-            currentUser();
+            currentUserWithRemove();
             updateUI();
             StartBtnUeberpruefung();
         });
@@ -198,12 +198,10 @@ public class MainPanel extends JPanel {
         currentUserWithRemove();
         updateUI();
         StartBtnUeberpruefung();
-
-
         for(JButton b :barr) {
-        remove(b);
-     }
-        barr.clear();
+          remove(b);
+         }
+         barr.clear();
 
 }
 
