@@ -62,124 +62,148 @@ public class MainPanel extends JPanel {
     private ArrayList<JButton> barr = new ArrayList<>();
     public void menuSession() {
 
-        JMenu menu= new JMenu("session");
-        JMenuItem item= new JMenuItem("Add Player to session");
-        item.addActionListener(l -> {
-            JTextArea username= new JTextArea();
-            username.setBorder(new LineBorder(Color.BLACK,2));
-            username.setBackground(Color.white);
-            username.setBounds(722, 80,100,30);
-            username.setText("Username");
-            username.addFocusListener(new FocusListener() {
-                @Override
-                public void focusGained(FocusEvent e) {
-                    username.setText("");
-                }
 
-                @Override
-                public void focusLost(FocusEvent e) {
-                    if(username.getText().equals("")) username.setText("Username");
-                }
+        JTextArea username = new JTextArea();
+        username.setBorder(new LineBorder(Color.BLACK, 2));
+        username.setBackground(Color.white);
+        username.setBounds(860, 80, 200, 30);
+        username.setText("Username");
+        username.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                username.setText("");
+            }
 
-            });
-            add(username);
-            setSize(100,25);
-            setLayout(null);
-            username.setEditable(true);
-            JTextArea password= new JTextArea();
-            password.setBorder(new LineBorder(Color.BLACK,2));
-            password.setBackground(Color.white);
-            password.setBounds(722, 120,100,30);
-            password.setText("Password");
-            password.addFocusListener(new FocusListener() {
-                @Override
-                public void focusGained(FocusEvent e) {
-                    password.setText("");
-                }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (username.getText().equals("")) username.setText("Username");
+            }
 
-                @Override
-                public void focusLost(FocusEvent e) {
-                    if(password.getText().equals("")) password.setText("Password");
-                }
+        });
+        add(username);
+        setSize(100, 25);
+        setLayout(null);
+        username.setEditable(true);
+        JTextArea password = new JTextArea();
+        password.setBorder(new LineBorder(Color.BLACK, 2));
+        password.setBackground(Color.white);
+        password.setBounds(860, 120, 200, 30);
+        password.setText("Password");
+        password.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                password.setText("");
+            }
 
-            });
-            add(password);
-            setSize(100,25);
-            setLayout(null);
-            password.setEditable(true);
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (password.getText().equals("")) password.setText("Password");
+            }
+
+        });
+        add(password);
+        setSize(100, 25);
+        setLayout(null);
+        password.setEditable(true);
+        updateUI();
+
+        JButton btn = new JButton();
+
+        btn.setBorder(new LineBorder(Color.BLACK, 2));
+        btn.setBackground(new Color(84,4,98,255));
+        btn.setBounds(860, 160, 200, 30);
+        btn.setVisible(true);
+        btn.setForeground(Color.WHITE);
+        btn.setText("Login");
+        add(btn);
+        setSize(100, 25);
+        setLayout(null);
+        updateUI();
+        btn.addActionListener(e -> {
+            if (Start.getSession().getLoggedInspieler().size() < 8) {
+                Start.getSession().addSpieler(username.getText(), password.getText());
+            }
+
+            username.setText("username");
+            password.setText("password");
+            if(Start.getSession().getLoggedInspieler().size() == 8){
+                username.setVisible(false);
+                username.setEnabled(false);
+                password.setVisible(false);
+                password.setEnabled(false);
+                btn.setEnabled(false);
+                btn.setVisible(false);
+
+            }
+            currentUser();
             updateUI();
+            StartBtnUeberpruefung();
+        });JButton btn2 = new JButton();
 
-            JButton btn= new JButton();
+        btn2.setBorder(new LineBorder(Color.BLACK, 2));
+        btn2.setBackground(new Color(84,4,98,255));
+        btn2.setBounds(860, 200, 200, 30);
+        btn2.setVisible(true);
+        btn2.setForeground(Color.WHITE);
+        btn2.setText("Register");
+        add(btn2);
+        setSize(100, 25);
+        setLayout(null);
+        updateUI();
+        btn2.addActionListener(e -> {
 
-            btn.setBorder(new LineBorder(Color.BLACK,2));
-            btn.setBackground(Color.GREEN);
-            btn.setBounds(722, 160,100,30);
-            btn.setVisible(true);
-            btn.setText("Submit");
-            add(btn);
-            setSize(100,25);
-            setLayout(null);
+
+            username.setText("username");
+            password.setText("password");
+            try {
+                Spieler.SaveUser(username.getText(), password.getText());
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            currentUser();
             updateUI();
-            btn.addActionListener(e -> {
-                if(Start.getSession().getLoggedInspieler().size() <8) {
-                    Start.getSession().addSpieler(username.getText(),password.getText());
+            StartBtnUeberpruefung();
+        });
+
+
+        for (JButton b : barr) {
+            remove(b);
+        }
+        barr.clear();
+
+        for (int i = 0; i < spieler.size(); i++) {
+            JButton BtnRemove = new JButton();
+            BtnRemove.setBorder(new LineBorder(Color.BLACK, 2));
+            BtnRemove.setBackground(Color.GREEN);
+            BtnRemove.setBounds(520, i * 60 + 20, 80, 40);
+            BtnRemove.setVisible(true);
+            BtnRemove.setText("Remove");
+            BtnRemove.addActionListener((a) -> {
+                for (JTextArea ta : tarr) {
+                    remove(ta);
                 }
 
-                remove(username);
-                remove(password);
-                remove(btn);
+                System.out.println((BtnRemove.getY() - 20) / 60);
+                Start.getSession().getLoggedInspieler().remove(Start.getSession().getLoggedInspieler().get((BtnRemove.getY() - 20) / 60));
                 currentUser();
                 updateUI();
-                StartBtnUeberpruefung();
+                remove(BtnRemove);
+                for (JButton b : barr) {
+                    remove(b);
+                }
+                barr.clear();
             });
-
-
-        });
-        JMenuItem item2 = new JMenuItem("Remove Player");
-        item2.addActionListener(l -> {
-
-            for(JButton b: barr) {
-                remove(b);
-            }
-            barr.clear();
-
-            for (int i = 0; i < spieler.size(); i++) {
-                JButton BtnRemove= new JButton();
-                BtnRemove.setBorder(new LineBorder(Color.BLACK,2));
-                BtnRemove.setBackground(Color.GREEN);
-                BtnRemove.setBounds(520, i*60+20,80,40);
-                BtnRemove.setVisible(true);
-                BtnRemove.setText("Remove");
-                BtnRemove.addActionListener((a)-> {
-                    for(JTextArea  ta: tarr) {
-                        remove(ta);
-                    }
-
-                    System.out.println((BtnRemove.getY()-20)/60);
-                    Start.getSession().getLoggedInspieler().remove(Start.getSession().getLoggedInspieler().get((BtnRemove.getY()-20)/60));
-                    currentUser();
-                    updateUI();
-                    remove(BtnRemove);
-                    for(JButton b: barr) {
-                        remove(b);
-                    }
-                    barr.clear();
-                });
-                barr.add(BtnRemove);
-                add(BtnRemove);
-                setLayout(null);
-            }
-            updateUI();
-        });
-
-        menu.add(item);
-        menu.add(item2);
-        menubar.add(menu);
-
-
-
-
+            barr.add(BtnRemove);
+            add(BtnRemove);
+            setLayout(null);
+        }
+        updateUI();
     }
+
+
+
+
+
     public void StartBtnUeberpruefung(){
         if(Start.getSession().getLoggedInspieler().isEmpty()){
 
@@ -484,7 +508,6 @@ public class MainPanel extends JPanel {
     }
 
     private void renderPlayers() {
-        //TODO wenn zeit mochen dass dynamisch spieerahnzal isch :D
         if(!Start.getSession().getLoggedInspieler().isEmpty()) {
             switch (Start.getSession().getLoggedInspieler().size()) {
                 case 2 -> {
@@ -908,7 +931,7 @@ public class MainPanel extends JPanel {
             spielerJTextAreaHashMap.clear();
             jButtonJTextAreaHashMap.clear();
             ifpunkteplus.clear();
-            //TODO bo vieleicht geaths jo // btw es geath :D
+
             renderRunde();
         }
     }
