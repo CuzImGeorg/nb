@@ -51,7 +51,7 @@ public class MainPanel extends JPanel {
                 updateUI();
 
                 menuSession();
-                admin();
+
                 currentUser();
                 menuGobal();
                 updateUI();
@@ -62,6 +62,20 @@ public class MainPanel extends JPanel {
     private ArrayList<JButton> barr = new ArrayList<>();
     public void menuSession() {
 
+        JButton adminPanel = new JButton();
+        adminPanel.setBorder(new LineBorder(Color.BLACK, 2));
+        adminPanel.setBackground(new Color(84,4,98,255));
+        adminPanel.setBounds(1500, 80, 200, 30);
+        adminPanel.setVisible(true);
+        adminPanel.setForeground(Color.WHITE);
+        adminPanel.setText("AdminPanel");
+        add(adminPanel);
+        setSize(100, 25);
+        setLayout(null);
+        updateUI();
+        adminPanel.addActionListener(e -> {
+            admin();
+        });
 
         JTextArea username = new JTextArea();
         username.setBorder(new LineBorder(Color.BLACK, 2));
@@ -290,11 +304,7 @@ public class MainPanel extends JPanel {
     }
 
     public void admin(){
-        JMenu fragen = new JMenu("admin");
-        JMenuItem admPanel = new JMenuItem("Admin Panel");
-        admPanel.setLocation(20,2);
-        admPanel.setBorder(new LineBorder(Color.BLACK,2));
-        admPanel.addActionListener((l)-> {
+
             JDialog frame = new JDialog();
             JPanel panel = new JPanel();
             frame.setContentPane(panel);
@@ -435,9 +445,8 @@ public class MainPanel extends JPanel {
             });
 //
 
-        });
-        fragen.add(admPanel);
-        menubar.add(fragen);
+
+
     }
 
     private void frageneue() {
@@ -937,31 +946,44 @@ public class MainPanel extends JPanel {
     }
 
     private void afterGame() {
-        spielerPunkteHashMap.forEach((Spieler s,Integer p)->{
-            JTextArea t = new JTextArea();
-            t.setText(s.getUsername());
-            t.setBorder(new LineBorder(Color.black, 10));
-            t.setBounds(790, Start.getSession().getLoggedInspieler().indexOf(s) * 90,400,80);
-            t.setFont(new Font("Verdana",1,35));
-            t.setVisible(true);
-            t.setEditable(false);
 
-            JTextArea punkte = new JTextArea();
-            punkte.setText(String.valueOf(p));
-            punkte.setBounds(1220, Start.getSession().getLoggedInspieler().indexOf(s) * 110,70,70);
-            punkte.setBorder(new LineBorder(Color.black, 10));
-            punkte.setFont(new Font("Verdana",1,35));
-            punkte.setBackground(Color.darkGray);
-            punkte.setForeground(Color.black);
-            punkte.setVisible(true);
-            punkte.setEditable(false);
+                    ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+                    ses.scheduleAtFixedRate(()-> {
+                        spielerPunkteHashMap.forEach((Spieler s,Integer p)->{
+                            JTextArea t = new JTextArea();
+                            t.setText(s.getUsername());
+                            t.setBorder(new LineBorder(Color.black, 10));
+                            t.setBounds(550, Start.getSession().getLoggedInspieler().indexOf(s) * 100 +30,400,80);
+                            t.setFont(new Font("Verdana",1,35));
+                            t.setVisible(true);
+                            t.setEditable(false);
+                            t.setBackground(new Color(0xAC61C9));
+                            t.setForeground(new Color(0x351257));
+                            JTextArea punkte = new JTextArea();
+                            punkte.setText(String.valueOf(p));
+                            punkte.setBounds(1000, Start.getSession().getLoggedInspieler().indexOf(s) * 100+30,80,80);
+                            punkte.setBorder(new LineBorder(Color.black, 10));
+                            punkte.setFont(new Font("Verdana",1,35));
+                            punkte.setBackground(new Color(0xAC61C9));
+                            punkte.setForeground(new Color(0x351257));
+                            punkte.setForeground(Color.black);
+                            punkte.setVisible(true);
+                            punkte.setEditable(false);
 
 
 
-            add(t);
-            add(punkte);
-            updateUI();
-        } );
+                            add(t);
+                            add(punkte);
+                            updateUI();
+                        try {
+                            ses.awaitTermination(1500,TimeUnit.MILLISECONDS);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        } );
+                    },0,50, TimeUnit.MILLISECONDS );
+
+
     }
     BufferedImage hg;
     BufferedImage bg;
