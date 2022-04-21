@@ -120,39 +120,7 @@ public class MainPanel extends JPanel {
         setLayout(null);
         password.setEditable(true);
         updateUI();
-
-        JButton btn = new JButton();
-
-        btn.setBorder(new LineBorder(Color.BLACK, 2));
-        btn.setBackground(new Color(84,4,98,255));
-        btn.setBounds(860, 160, 200, 30);
-        btn.setVisible(true);
-        btn.setForeground(Color.WHITE);
-        btn.setText("Login");
-        add(btn);
-        setSize(100, 25);
-        setLayout(null);
-        updateUI();
-        btn.addActionListener(e -> {
-            if (Start.getSession().getLoggedInspieler().size() < 8) {
-                Start.getSession().addSpieler(username.getText(), password.getText());
-            }
-
-            username.setText("username");
-            password.setText("password");
-            if(Start.getSession().getLoggedInspieler().size() == 8){
-                username.setVisible(false);
-                username.setEnabled(false);
-                password.setVisible(false);
-                password.setEnabled(false);
-                btn.setEnabled(false);
-                btn.setVisible(false);
-
-            }
-            currentUser();
-            updateUI();
-            StartBtnUeberpruefung();
-        });JButton btn2 = new JButton();
+        JButton btn2 = new JButton();
 
         btn2.setBorder(new LineBorder(Color.BLACK, 2));
         btn2.setBackground(new Color(84,4,98,255));
@@ -181,6 +149,41 @@ public class MainPanel extends JPanel {
             updateUI();
             StartBtnUeberpruefung();
         });
+        JButton btn = new JButton();
+
+        btn.setBorder(new LineBorder(Color.BLACK, 2));
+        btn.setBackground(new Color(84,4,98,255));
+        btn.setBounds(860, 160, 200, 30);
+        btn.setVisible(true);
+        btn.setForeground(Color.WHITE);
+        btn.setText("Login");
+        add(btn);
+        setSize(100, 25);
+        setLayout(null);
+        updateUI();
+        btn.addActionListener(e -> {
+            if (Start.getSession().getLoggedInspieler().size() < 8) {
+                Start.getSession().addSpieler(username.getText(), password.getText());
+            }
+
+            username.setText("username");
+            password.setText("password");
+            if(Start.getSession().getLoggedInspieler().size() == 8){
+                username.setVisible(false);
+                username.setEnabled(false);
+                password.setVisible(false);
+                password.setEnabled(false);
+                btn.setEnabled(false);
+                btn.setVisible(false);
+                btn2.setEnabled(false);
+                btn2.setVisible(false);
+
+            }
+            currentUser();
+            updateUI();
+            StartBtnUeberpruefung();
+        });
+
 
 
         for (JButton b : barr) {
@@ -516,9 +519,9 @@ public class MainPanel extends JPanel {
             remove(runde);
             revalidate();
             repaint();
-            renderPlayers();
-            randomquestion();
             writeanswer();
+            randomquestion();
+
 
         },5,TimeUnit.SECONDS);
     }
@@ -736,8 +739,10 @@ public class MainPanel extends JPanel {
                 JButton b = new JButton("ok");
                 b.setBounds(t.getX() + 215, t.getY()+40, 40,75);
                 b.setBackground(Color.green);
+
                 add(b);
                 add(ta);
+                System.out.println("10000");
                 spielerJTextAreaHashMapanswer.put(s,ta);
                 spielerJButtonHashMap.put(s,b);
                 updateUI();
