@@ -17,7 +17,7 @@ public class MainPanel extends JPanel {
     private final JMenuBar menubar;
     private Datenbankverbindung db= new Datenbankverbindung();
     private ArrayList<Spieler>  spieler= new ArrayList<>();
-    private int spielid, rundeid;
+    private int spielid, rundeid, maxrunde;
     private final Abfrafgen abfrafgen = new Abfrafgen();
     private  LoadinScreen ls;
 
@@ -185,34 +185,46 @@ public class MainPanel extends JPanel {
         }
         barr.clear();
 
-        for (int i = 0; i < spieler.size(); i++) {
-            JButton BtnRemove = new JButton();
-            BtnRemove.setBorder(new LineBorder(Color.BLACK, 2));
-            BtnRemove.setBackground(Color.GREEN);
-            BtnRemove.setBounds(520, i * 60 + 20, 80, 40);
-            BtnRemove.setVisible(true);
-            BtnRemove.setText("Remove");
-            BtnRemove.addActionListener((a) -> {
-                for (JTextArea ta : tarr) {
-                    remove(ta);
-                }
+            for (int i = 0; i < spieler.size(); i++) {
+                JButton BtnRemove= new JButton();
+                BtnRemove.setBorder(new LineBorder(Color.BLACK,2));
+                BtnRemove.setBackground(Color.GREEN);
+                BtnRemove.setBounds(520, i*60+20,80,40);
+                BtnRemove.setVisible(true);
+                BtnRemove.setText("Remove");
+                int j = i;
+                BtnRemove.addActionListener((a)-> {
+//                    for(JTextArea  ta: tarr) {
+//                        remove(ta);
+//                    }
 
-                System.out.println((BtnRemove.getY() - 20) / 60);
-                Start.getSession().getLoggedInspieler().remove(Start.getSession().getLoggedInspieler().get((BtnRemove.getY() - 20) / 60));
-                currentUser();
-                updateUI();
-                remove(BtnRemove);
-                for (JButton b : barr) {
-                    remove(b);
-                }
-                barr.clear();
-            });
-            barr.add(BtnRemove);
-            add(BtnRemove);
-            setLayout(null);
-        }
-        updateUI();
-    }
+
+
+                    Start.getSession().getLoggedInspieler().remove(j);
+                    for(JTextArea ta : tarr) {
+
+
+                        ta.setVisible(false);
+                        updateUI();
+                        revalidate();
+                        repaint();
+
+                    }
+                    currentUser();
+                    updateUI();
+                    remove(BtnRemove);
+                    for(JButton b: barr) {
+                        remove(b);
+                    }
+
+                    barr.clear();
+                });
+                barr.add(BtnRemove);
+                add(BtnRemove);
+                setLayout(null);
+            }
+            updateUI();
+        });
 
 
 
@@ -226,15 +238,30 @@ public class MainPanel extends JPanel {
             if(spieler.size() >= 2){
                 JButton SpielStart = new JButton();
                 SpielStart.setBorder(new LineBorder(Color.BLACK,2));
-                SpielStart.setBackground(Color.GREEN);
-                SpielStart.setBounds(722, 750,100,30);
+                SpielStart.setBackground(new Color(84, 4, 98, 255));
+                SpielStart.setBounds(860, 750,200,80);
+                SpielStart.setFont(new Font("Verdana", 1, 20));
                 SpielStart.setVisible(true);
+                SpielStart.setForeground(Color.WHITE);
                 SpielStart.setText("Starte Spiel");
                 add(SpielStart);
-                setSize(100,25);
                 setLayout(null);
+
+                JTextArea runden = new JTextArea();
+                runden.setBorder(new LineBorder(Color.BLACK,2));
+                runden.setBackground(new Color(84, 4, 98, 255));
+                runden.setBounds(860, 700,200,30);
+                runden.setFont(new Font("Verdana", 1, 20));
+                runden.setText("10");
+                runden.setForeground(Color.WHITE);
+                add(runden);
+
+
+
+
                 updateUI();
                 SpielStart.addActionListener(e -> {
+                    maxrunde = Integer.parseInt(runden.getText());
                     removeAll();
                     revalidate();
                     repaint();
@@ -499,8 +526,8 @@ public class MainPanel extends JPanel {
         JLabel runde = new JLabel();
         runde.setText("RUNDE " + rundeid);
         runde.setBackground(Color.darkGray);
-        runde.setBounds(700,400,500,200);
-        runde.setForeground(Color.black);
+        runde.setBounds(850,400,500,200);
+        runde.setForeground(Color.WHITE);
         runde.setFont(new Font("Verdana",1,50));
         add(runde);
         ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
@@ -517,6 +544,7 @@ public class MainPanel extends JPanel {
     }
 
     private void renderPlayers() {
+        //TODO wenn zeit mochen dass dynamisch spieerahnzal isch :D
         if(!Start.getSession().getLoggedInspieler().isEmpty()) {
             switch (Start.getSession().getLoggedInspieler().size()) {
                 case 2 -> {
@@ -884,7 +912,7 @@ public class MainPanel extends JPanel {
 
 
     public void afterVote() {
-        System.out.println(spielerPunkteHashMap);
+
         removeAll();
         revalidate();
         repaint();
@@ -929,7 +957,7 @@ public class MainPanel extends JPanel {
         removeAll();
         revalidate();
         repaint();
-        if(rundeid == 3){
+        if(rundeid == maxrunde){
             afterGame();
         }
         else {
