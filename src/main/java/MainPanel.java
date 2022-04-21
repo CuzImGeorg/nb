@@ -710,7 +710,7 @@ public class MainPanel extends JPanel {
         if(ls.getState() <100) {
             g.drawImage(hg, 0, 0, 1920, 1080, null);
             g.drawImage(ls.getHg(), 660, 860, 600, 80, null);
-            g.setColor(Color.green);
+            g.setColor(new Color(161,94,255));
             g.fillRect(713,885,ls.getState()*5,30);
             g.setColor(Color.WHITE);
             g.setFont(new Font("Verdana",1,25));
@@ -723,7 +723,7 @@ public class MainPanel extends JPanel {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            g.setColor(Color.WHITE);
+            g.setColor(new Color(161,94,255));
             g.fillRect(713,885,ls.getState()*5,30);
             g.setColor(Color.WHITE);
             g.setFont(new Font("Verdana",1,25));
