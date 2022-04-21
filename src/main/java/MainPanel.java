@@ -985,7 +985,7 @@ public class MainPanel extends JPanel {
                             JTextArea t = new JTextArea();
                             t.setText(s.getUsername());
                             t.setBorder(new LineBorder(Color.black, 10));
-                            t.setBounds(550, i * 100 +30,400,80);
+                            t.setBounds(550, i * 80 +20,400,75);
                             t.setFont(new Font("Verdana",1,35));
                             t.setVisible(true);
                             t.setEditable(false);
@@ -993,7 +993,7 @@ public class MainPanel extends JPanel {
                             t.setForeground(new Color(0x351257));
                             JTextArea punkte = new JTextArea();
                             punkte.setText(String.valueOf(p));
-                            punkte.setBounds(1000, i * 100+30,80,80);
+                            punkte.setBounds(1000, i * 80+20,80,75);
                             punkte.setBorder(new LineBorder(Color.black, 10));
                             punkte.setFont(new Font("Verdana",1,35));
                             punkte.setBackground(new Color(0xAC61C9));
@@ -1022,7 +1022,7 @@ public class MainPanel extends JPanel {
     private void playAgian() {
         JButton playAgian = new JButton("PLAY AGIAN");
         playAgian.setBorder(new LineBorder(Color.black, 10));
-        playAgian.setBounds(550, i * 100 +30,400,80);
+        playAgian.setBounds(550, 900,400,80);
         playAgian.setFont(new Font("Verdana",1,35));
         playAgian.setVisible(true);
         playAgian.setBackground(new Color(0xAC61C9));
@@ -1033,13 +1033,13 @@ public class MainPanel extends JPanel {
         });
         JButton BackToMainMenu = new JButton("BACK TO MAIN MENU");
         BackToMainMenu.setBorder(new LineBorder(Color.black, 10));
-        BackToMainMenu.setBounds(550, i * 100 +30,400,80);
+        BackToMainMenu.setBounds(550, 1000,400,80);
         BackToMainMenu.setFont(new Font("Verdana",1,35));
         BackToMainMenu.setVisible(true);
         BackToMainMenu.setBackground(new Color(0xAC61C9));
         BackToMainMenu.setForeground(new Color(0x351257));
         add(BackToMainMenu);
-        playAgian.addActionListener((l)-> {
+        BackToMainMenu.addActionListener((l)-> {
 
         });
 
