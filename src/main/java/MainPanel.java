@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
 
                 menuSession();
 
-                currentUser();
+                currentUserWithRemove();
                 menuGobal();
                 updateUI();
                 ses.shutdown();
@@ -149,7 +149,7 @@ public class MainPanel extends JPanel {
                 btn.setVisible(false);
 
             }
-            currentUser();
+            currentUserWithRemove();
             updateUI();
             StartBtnUeberpruefung();
         });JButton btn2 = new JButton();
@@ -177,7 +177,7 @@ public class MainPanel extends JPanel {
             }
             username.setText("username");
             password.setText("password");
-            currentUser();
+            currentUserWithRemove();
             updateUI();
             StartBtnUeberpruefung();
         });
@@ -451,13 +451,39 @@ public class MainPanel extends JPanel {
             remove(ta);
             updateUI();
         }
+        tarr.clear();
+
+        if(!Start.getSession().getLoggedInspieler().isEmpty()) {
+            for (Spieler s : Start.getSession().getLoggedInspieler()) {
+
+                JTextArea t = new JTextArea();
+                t.setText(s.getUsername());
+                t.setBorder(new LineBorder(Color.black, 2));
+                t.setBounds(100, Start.getSession().getLoggedInspieler().indexOf(s) * 60+20,400,40);
+                t.setFont(new Font("Verdana",1,20));
+                t.setVisible(true);
+                t.setEditable(false);
+                tarr.add(t);
+
+                add(t);
+
+                updateUI();
+            }
+        }
+
+    }
+    public void currentUserWithRemove() {
+        for (JTextArea ta: tarr) {
+            remove(ta);
+            updateUI();
+        }
         for (JButton btn: JBarr) {
             remove(btn);
             updateUI();
         }
         tarr.clear();
         JBarr.clear();
-        Start.getSession().getLoggedInspieler().forEach(Spieler::toStringd);
+
         if(!Start.getSession().getLoggedInspieler().isEmpty()) {
             for (Spieler s : Start.getSession().getLoggedInspieler()) {
 
@@ -719,7 +745,7 @@ public class MainPanel extends JPanel {
     public void randomquestion() {
         JTextArea frage = new JTextArea();
         Random rdm = new Random();
-        f = new Frage().setFullRecord(rdm.nextInt(abfrafgen.getAnzahlFrage()-1));
+        f = new Frage().setFullRecord(rdm.nextInt(abfrafgen.getAnzahlFrage())+1);
         frage.setText(f.getFrage());
         frage.setLineWrap(true);
         frage.setBackground(Color.darkGray);
@@ -963,44 +989,44 @@ public class MainPanel extends JPanel {
     }
     int i;
     private void afterGame() {
-                         i = 0;
-                        spielerPunkteHashMap.entrySet().stream().sorted((k1, k2) -> k2.getValue().compareTo(k1.getValue()));
-                    ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-                    ses.schedule(()-> {
-                        spielerPunkteHashMap.forEach((Spieler s,Integer p)->{
-                            JTextArea t = new JTextArea();
-                            t.setText(s.getUsername());
-                            t.setBorder(new LineBorder(Color.black, 10));
-                            t.setBounds(550, i * 80 +20,400,75);
-                            t.setFont(new Font("Verdana",1,35));
-                            t.setVisible(true);
-                            t.setEditable(false);
-                            t.setBackground(new Color(0xAC61C9));
-                            t.setForeground(new Color(0x351257));
-                            JTextArea punkte = new JTextArea();
-                            punkte.setText(String.valueOf(p));
-                            punkte.setBounds(1000, i * 80+20,80,75);
-                            punkte.setBorder(new LineBorder(Color.black, 10));
-                            punkte.setFont(new Font("Verdana",1,35));
-                            punkte.setBackground(new Color(0xAC61C9));
-                            punkte.setForeground(new Color(0x351257));
-                            punkte.setForeground(Color.black);
-                            punkte.setVisible(true);
-                            punkte.setEditable(false);
-                            i++;
+             i = 0;
+            spielerPunkteHashMap.entrySet().stream().sorted((k1, k2) -> k2.getValue().compareTo(k1.getValue()));
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+        ses.schedule(()-> {
+            spielerPunkteHashMap.forEach((Spieler s,Integer p)->{
+                JTextArea t = new JTextArea();
+                t.setText(s.getUsername());
+                t.setBorder(new LineBorder(Color.black, 10));
+                t.setBounds(550, i * 80 +20,400,75);
+                t.setFont(new Font("Verdana",1,35));
+                t.setVisible(true);
+                t.setEditable(false);
+                t.setBackground(new Color(0xAC61C9));
+                t.setForeground(new Color(0x351257));
+                JTextArea punkte = new JTextArea();
+                punkte.setText(String.valueOf(p));
+                punkte.setBounds(1000, i * 80+20,80,75);
+                punkte.setBorder(new LineBorder(Color.black, 10));
+                punkte.setFont(new Font("Verdana",1,35));
+                punkte.setBackground(new Color(0xAC61C9));
+                punkte.setForeground(new Color(0x351257));
+                punkte.setForeground(Color.black);
+                punkte.setVisible(true);
+                punkte.setEditable(false);
+                i++;
 
 
-                            add(t);
-                            add(punkte);
-                            updateUI();
-                        try {
-                            ses.awaitTermination(1500,TimeUnit.MILLISECONDS);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        } );
-                        playAgian();
-                    },50, TimeUnit.MILLISECONDS );
+                add(t);
+                add(punkte);
+                updateUI();
+            try {
+                ses.awaitTermination(1500,TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            } );
+            playAgian();
+        },50, TimeUnit.MILLISECONDS );
 
 
     }
@@ -1014,13 +1040,32 @@ public class MainPanel extends JPanel {
         playAgian.setBackground(new Color(0xAC61C9));
         playAgian.setForeground(new Color(0x351257));
         add(playAgian);
+        updateUI();
         playAgian.addActionListener((l)-> {
             removeAll();
             revalidate();
             repaint();
             ls = new LoadinScreen();
             ls.start();
-            load();
+            ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+            ses.scheduleAtFixedRate(()-> {
+                if(ls.getState()<=100) {
+                    updateUI();
+                }else {
+
+                    rundeid++;
+                    spielerJTextAreaHashMapanswer.clear();
+                    spielerJButtonHashMap.clear();
+                    spielerJTextAreaHashMapVote.clear();
+                    spielerJTextAreaHashMap.clear();
+                    jButtonJTextAreaHashMap.clear();
+                    ifpunkteplus.clear();
+                    gamestart();
+                    ses.shutdown();
+                }
+            },0,10,TimeUnit.MILLISECONDS);
+
+
         });
         JButton BackToMainMenu = new JButton("BACK TO MAIN MENU");
         BackToMainMenu.setBorder(new LineBorder(Color.black, 10));
@@ -1031,7 +1076,28 @@ public class MainPanel extends JPanel {
         BackToMainMenu.setForeground(new Color(0x351257));
         add(BackToMainMenu);
         BackToMainMenu.addActionListener((l)-> {
+            removeAll();
+            revalidate();
+            repaint();
+            ls = new LoadinScreen();
+            ls.start();
+            ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+            ses.scheduleAtFixedRate(()-> {
+                if(ls.getState()<=100) {
+                    updateUI();
+                }else {
 
+                    rundeid++;
+                    spielerJTextAreaHashMapanswer.clear();
+                    spielerJButtonHashMap.clear();
+                    spielerJTextAreaHashMapVote.clear();
+                    spielerJTextAreaHashMap.clear();
+                    jButtonJTextAreaHashMap.clear();
+                    ifpunkteplus.clear();
+                    load(); //TODO bo vl geaths jo
+                    ses.shutdown();
+                }
+            },0,10,TimeUnit.MILLISECONDS);
         });
 
 
