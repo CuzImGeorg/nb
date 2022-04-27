@@ -8,9 +8,8 @@ public class Start {
         session = new Session();
          dbv = new Datenbankverbindung();
        main = new MainFrame();
-        HandleCmdInput hci = new HandleCmdInput();
-
-        hci.input();
+//        HandleCmdInput hci = new HandleCmdInput();
+//        hci.input();
     }
 
     public static Datenbankverbindung getDbv() {

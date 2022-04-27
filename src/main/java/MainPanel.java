@@ -498,7 +498,6 @@ public class MainPanel extends JPanel {
         }
         tarr.clear();
         JBarr.clear();
-        Start.getSession().getLoggedInspieler().forEach(Spieler::toStringd);
         if(!Start.getSession().getLoggedInspieler().isEmpty()) {
             for (Spieler s : Start.getSession().getLoggedInspieler()) {
 
@@ -1072,7 +1071,19 @@ public class MainPanel extends JPanel {
         BackToMainMenu.setForeground(new Color(0x351257));
         add(BackToMainMenu);
         BackToMainMenu.addActionListener((l)-> {
-
+            removeAll();
+            revalidate();
+            repaint();
+            spielerJTextAreaHashMapanswer.clear();
+            spielerJButtonHashMap.clear();
+            spielerJTextAreaHashMapVote.clear();
+            spielerJTextAreaHashMap.clear();
+            jButtonJTextAreaHashMap.clear();
+            ifpunkteplus.clear();
+            Start.getSession().getLoggedInspieler().clear();
+            ls = new LoadinScreen();
+            ls.start();
+            load();
         });
         updateUI();
 
