@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class MainPanel extends JPanel {
     private final JMenuBar menubar;
@@ -815,7 +816,7 @@ public class MainPanel extends JPanel {
             spielerJTextAreaHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setBackground(Color.green);
             spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setBackground(Color.green);
             spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).enable();
-
+           spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).requestFocus();
 
             spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).addActionListener((l)-> {
 
@@ -823,6 +824,7 @@ public class MainPanel extends JPanel {
                 spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setBackground(Color.gray);
                 spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).disable();
                 spielerJButtonHashMap.get(Start.getSession().getLoggedInspieler().get(j)).setVisible(false);
+
                 spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).setVisible(false);
                 Antwort.neueAnswer(spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText(), Start.getSession().getLoggedInspieler().get(j).getId());
                 FrageAntwort.newFrageAntwort(new Antwort().SetFullRecordAntwort(f.getFrage(), spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText()).getId(), f.getId(), rundeid, spielid);
@@ -1002,7 +1004,7 @@ public class MainPanel extends JPanel {
 
     private int check(Spieler s) {
         for(Spieler s1: Start.getSession().getLoggedInspieler()) {
-            if(getVotes.get(s) < getVotes.get(s1)) {
+            if(getVotes.get(s) == 0 || getVotes.get(s) < getVotes.get(s1)) {
                 return 0;
             }
 
@@ -1059,20 +1061,20 @@ public class MainPanel extends JPanel {
                             i++;
 
 
-                            add(t);
-                            add(punkte);
-                            updateUI();
-                        try {
-                            ses.awaitTermination(1500,TimeUnit.MILLISECONDS);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        } );
-                        playAgian();
-                    },50, TimeUnit.MILLISECONDS );
+                add(t);
+                add(punkte);
+                updateUI();
+            try {
+                ses.awaitTermination(1500,TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            } );
+            playAgian();
+        },50, TimeUnit.MILLISECONDS );
 
 
-    }
+}
 
     private void playAgian() {
         JButton playAgian = new JButton("PLAY AGIAN");
@@ -1087,6 +1089,12 @@ public class MainPanel extends JPanel {
             removeAll();
             revalidate();
             repaint();
+            spielerJTextAreaHashMapanswer.clear();
+            spielerJButtonHashMap.clear();
+            spielerJTextAreaHashMapVote.clear();
+            spielerJTextAreaHashMap.clear();
+            jButtonJTextAreaHashMap.clear();
+            ifpunkteplus.clear();
             ls = new LoadinScreen();
             ls.start();
             getVotes.clear();
