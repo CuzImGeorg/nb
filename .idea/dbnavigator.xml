@@ -17,7 +17,7 @@
       <scope value="GLOBAL" />
       <destination value="FILE" />
       <format value="EXCEL" />
-      <charset value="windows-1252" />
+      <charset value="UTF-8" />
     </export-instructions>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -82,7 +82,7 @@
           <database value="postgres" />
           <type value="USER_PASSWORD" />
           <user value="postgres" />
-          <deprecated-pwd value="YWRtaW4=" />
+          <deprecated-pwd value="" />
         </database>
         <properties>
           <auto-commit value="false" />

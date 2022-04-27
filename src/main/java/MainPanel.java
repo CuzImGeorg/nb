@@ -1074,6 +1074,7 @@ public class MainPanel extends JPanel {
         BackToMainMenu.addActionListener((l)-> {
 
         });
+        updateUI();
 
 
 
