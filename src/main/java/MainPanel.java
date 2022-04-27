@@ -1077,7 +1077,7 @@ public class MainPanel extends JPanel {
     private void playAgian() {
         JButton playAgian = new JButton("PLAY AGIAN");
         playAgian.setBorder(new LineBorder(Color.black, 10));
-        playAgian.setBounds(550, 850,600,80);
+        playAgian.setBounds(660, 850,600,80);
         playAgian.setFont(new Font("Verdana",1,35));
         playAgian.setVisible(true);
         playAgian.setBackground(new Color(0xAC61C9));
@@ -1095,7 +1095,7 @@ public class MainPanel extends JPanel {
         });
         JButton BackToMainMenu = new JButton("BACK TO MAIN MENU");
         BackToMainMenu.setBorder(new LineBorder(Color.black, 10));
-        BackToMainMenu.setBounds(550, 950,600,80);
+        BackToMainMenu.setBounds(660, 950,600,80);
         BackToMainMenu.setFont(new Font("Verdana",1,35));
         BackToMainMenu.setVisible(true);
         BackToMainMenu.setBackground(new Color(0xAC61C9));
