@@ -757,6 +757,9 @@ public class MainPanel extends JPanel {
 
     private Frage f;
     public void randomquestion() {
+        for(Spieler s : Start.getSession().getLoggedInspieler()) {
+            getVotes.put(s,0);
+        }
         JTextArea frage = new JTextArea();
         Random rdm = new Random();
         f = new Frage().setFullRecord(rdm.nextInt(abfrafgen.getAnzahlFrage()-1));
@@ -828,7 +831,7 @@ public class MainPanel extends JPanel {
             } );
 
     }
-
+    private HashMap<Spieler , Integer> getVotes= new HashMap<>();
 
     private HashMap<Spieler, JTextArea> spielerJTextAreaHashMapVote = new HashMap<>();
     private HashMap<JButton, JTextArea> jButtonJTextAreaHashMap = new HashMap<>();
@@ -914,6 +917,7 @@ public class MainPanel extends JPanel {
                 SpielerVote.setSpielerVote(Start.getSession().getLoggedInspieler().get(z).getId(), FrageAntwort.getIDFrageAntwort(f.getId(), new Antwort().SetFullRecordAntwort(f.getFrage(), spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText()).getId(), spielid, rundeid ));
                // votes.put(Start.getSession().getLoggedInspieler().get(z), FrageAntwort.getIDFrageAntwort(f.getId(), new Antwort().SetFullRecordAntwort(f.getFrage(), spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText()).getId(), spielid, rundeid ) );
                votes.put(Start.getSession().getLoggedInspieler().get(z), t);
+
                if(t.equals(taRA)) {
                    int punkte = spielerPunkteHashMap.get(Start.getSession().getLoggedInspieler().get(z)) +1;
                    spielerPunkteHashMap.remove(Start.getSession().getLoggedInspieler().get(z));
@@ -921,6 +925,17 @@ public class MainPanel extends JPanel {
                    ifpunkteplus.put(Start.getSession().getLoggedInspieler().get(z), true);
                } else {
                    ifpunkteplus.put(Start.getSession().getLoggedInspieler().get(z), false);
+
+                   Spieler r = null;
+                   for(Spieler s : Start.getSession().getLoggedInspieler()) {
+                        if(s.getId() == new Antwort().SetFullRecordAntwort(f.getFrage(), spielerJTextAreaHashMapanswer.get(Start.getSession().getLoggedInspieler().get(j)).getText()).getSpielerid()) {
+                            r = s;
+                            break;
+                        }
+                   }
+                   int p = getVotes.get(r)+1;
+                   getVotes.remove(r);
+                   getVotes.put(r,p);
                }
                 //TODO punkete vergabe fixen
 
@@ -951,16 +966,19 @@ public class MainPanel extends JPanel {
             JTextArea t = new JTextArea();
             t.setText(s.getUsername());
             t.setBorder(new LineBorder(Color.black, 10));
-            t.setBounds(790, Start.getSession().getLoggedInspieler().indexOf(s) * 90,400,80);
+            t.setBounds(790, Start.getSession().getLoggedInspieler().indexOf(s) * 110,400,80);
             t.setFont(new Font("Verdana",1,35));
             t.setVisible(true);
             t.setEditable(false);
 
             JTextArea punkte = new JTextArea();
             if(ifpunkteplus.get(s)) {
-                punkte.setText("+1");
-            }else punkte.setText("+0");
-            punkte.setBounds(1220, Start.getSession().getLoggedInspieler().indexOf(s) * 110,70,70);
+                punklte++;
+            }
+            punklte = punklte+ check(s);
+
+            punkte.setText("+"+punklte);
+            punkte.setBounds(1220, Start.getSession().getLoggedInspieler().indexOf(s) * 115,70,80);
             punkte.setFont(new Font("Verdana",1,35));
             punkte.setBackground(Color.darkGray);
             punkte.setForeground(Color.WHITE);
@@ -982,6 +1000,16 @@ public class MainPanel extends JPanel {
 
     }
 
+    private int check(Spieler s) {
+        for(Spieler s1: Start.getSession().getLoggedInspieler()) {
+            if(getVotes.get(s) < getVotes.get(s1)) {
+                return 0;
+            }
+
+        }
+        return 1;
+    }
+
     private void repeeat() {
         removeAll();
         revalidate();
@@ -997,6 +1025,7 @@ public class MainPanel extends JPanel {
             spielerJTextAreaHashMap.clear();
             jButtonJTextAreaHashMap.clear();
             ifpunkteplus.clear();
+            getVotes.clear();
 
             renderRunde();
         }
@@ -1018,7 +1047,7 @@ public class MainPanel extends JPanel {
                             t.setBackground(new Color(0xAC61C9));
                             t.setForeground(new Color(0x351257));
                             JTextArea punkte = new JTextArea();
-                            punkte.setText(String.valueOf(p));
+                            punkte.setText(String.valueOf(p + getVotes.get(s))); //TODO
                             punkte.setBounds(1000, i * 80+20,80,75);
                             punkte.setBorder(new LineBorder(Color.black, 10));
                             punkte.setFont(new Font("Verdana",1,35));
@@ -1060,6 +1089,8 @@ public class MainPanel extends JPanel {
             repaint();
             ls = new LoadinScreen();
             ls.start();
+            getVotes.clear();
+            votes.clear();
             load();
         });
         JButton BackToMainMenu = new JButton("BACK TO MAIN MENU");
