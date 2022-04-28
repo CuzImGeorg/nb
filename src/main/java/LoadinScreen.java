@@ -14,7 +14,7 @@ public class LoadinScreen {
 
     public LoadinScreen() {
         try {
-            hg = ImageIO.read(new File("src/main/java/lbar.png"));
+            hg = ImageIO.read(getClass().getResource("/lbar.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -25,7 +25,7 @@ public class LoadinScreen {
         int rdm = r.nextInt(5)+5;
         ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
         ses.scheduleAtFixedRate(()-> {
-            if(state <= 101) {
+            if(state < 101) {
 
                 state++;
                 try {

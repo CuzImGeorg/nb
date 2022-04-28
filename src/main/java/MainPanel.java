@@ -12,7 +12,6 @@ import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class MainPanel extends JPanel {
     private final JMenuBar menubar;
@@ -27,8 +26,8 @@ public class MainPanel extends JPanel {
         ls.start();
 
         try {
-            hg = ImageIO.read(new File("src/main/java/background.png"));
-            bg = ImageIO.read(new File("src/main/java/bg.png"));
+            hg = ImageIO.read(getClass().getResource("/background.png"));
+            bg = ImageIO.read(getClass().getResource("/bg.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -1150,7 +1149,8 @@ public class MainPanel extends JPanel {
         } else if (ls.getState() == 100) {
             g.drawImage(hg, 0, 0, 1920, 1080, null);
             try {
-                g.drawImage(ImageIO.read(new File("src/main/java/lbarfull.png")), 660, 860, 600, 80, null);
+//                g.drawImage(ImageIO.read(new File("src/main/java/lbarfull.png")), 660, 860, 600, 80, null);
+                g.drawImage(ImageIO.read(getClass().getResource("/lbarfull.png")), 660, 860, 600, 80, null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
