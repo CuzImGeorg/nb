@@ -762,7 +762,7 @@ public class MainPanel extends JPanel {
         }
         JTextArea frage = new JTextArea();
         Random rdm = new Random();
-        f = new Frage().setFullRecord(rdm.nextInt(abfrafgen.getAnzahlFrage()-1));
+        f = new Frage().setFullRecord(rdm.nextInt(abfrafgen.getAnzahlFrage()));
         frage.setText(f.getFrage());
         frage.setLineWrap(true);
         frage.setBackground(Color.darkGray);

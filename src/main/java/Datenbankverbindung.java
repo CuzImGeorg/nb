@@ -8,9 +8,9 @@ public class Datenbankverbindung {
     private  Connection conn;
     private   Statement statement;
 
-    private final String jdbcURL = "jdbc:postgresql://localhost:5432/nobody";
-    private final String username = "admin";
-    private final String psw = "admin";
+    private final String jdbcURL = "jdbc:sqlite:db/db.db";
+    private final String username = "postgres";
+    private final String psw = "Admin";
 
     private boolean debugMode = Start.isDebugMode();
     

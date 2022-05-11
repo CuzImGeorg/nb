@@ -51,7 +51,7 @@ public class LoadinScreen {
                 if(r.nextInt(4)==2 && state == 99) {
                     state = 0;
                 }
-                if(r.nextInt(1000)==2) {
+                if(r.nextInt(1000)==2 ) {
                     state = 0;
                 }
 

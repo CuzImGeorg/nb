@@ -77,7 +77,7 @@ public class Spieler {
 
         Statement st = Start.getDbv().getStatement();
 
-        st.execute("INSERT INTO Spieler(username,password,admin) VALUES ('" + username + "','" + password + "',false)");
+        st.execute("INSERT INTO spieler(username,password,admin) VALUES ('" + username + "','" + password + "',false)");
 
     }
 
